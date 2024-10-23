@@ -1,0 +1,1 @@
+- [kernel_install](./kernel_install.md): Guide to install the specified kernel version to solve the configuration problems of musa environment caused by kernel version incompatibility.

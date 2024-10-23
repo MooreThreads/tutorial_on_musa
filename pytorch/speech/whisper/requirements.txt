@@ -1,0 +1,7 @@
+datasets>=2.6.1
+accelerate==1.0.1
+transformers
+librosa
+evaluate
+jiwer
+gradio

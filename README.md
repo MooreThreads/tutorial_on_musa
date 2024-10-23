@@ -1,93 +1,104 @@
-# examples_on_musa
+![Examples Logo](docs/images/example.png)
+-----------------------
+
+<!-- toc -->
+
+- [setup\_musa](#setup_musa)
+- [musa\_quick\_start](#musa_quick_start)
+- [torch\_musa](#torch_musa)
+- [vLLM](#vllm)
+- [Open Resources](#open-resources)
+  - [torch\_musa](#torch_musa-1)
+    - [开发者文档](#开发者文档)
+    - [开发者镜像文档](#开发者镜像文档)
+    - [用户镜像文档](#用户镜像文档)
+  - [vLLM文档](#vllm文档)
+  - [MTTransformer镜像文档](#mttransformer镜像文档)
+  - [摩尔学院](#摩尔学院)
+  - [摩尔线程开发者网站](#摩尔线程开发者网站)
+    - [摩尔线程博客中心](#摩尔线程博客中心)
+    - [摩尔线程文档中心](#摩尔线程文档中心)
+    - [摩尔线程GPU监控和管理工具](#摩尔线程gpu监控和管理工具)
+    - [摩尔线程云原生套件安装及使用文档](#摩尔线程云原生套件安装及使用文档)
+  - [摩尔线程CSDN社区](#摩尔线程csdn社区)
+  - [镜像仓库](#镜像仓库)
+  <!-- tocstop -->
+
+## setup_musa
+
+[setup_musa](./setup_musa)目录包含配置musa开发环境的文档和脚本，以及对musa环境检查的脚本。 用户可根据目录中文档进行环境配置，有问题可以参考[FAQ](./FAQ)目录解决。配置MUSA环境整体流程如下图所示，其中Check是可选项:
+
+![install_guide](docs/images/install_guide.png)
+
+## musa_quick_start
+[musa_quick_start](./musa_quick_start)目录包含了一些musa编程示例代码。用户可参考示例代码快速开始musa编程工作。
+
+
+## torch_musa
+
+| Models  | Mode      |
+| ------- | --------- |
+| [QuichStart](./pytorch/QuickStart)  | Training/Inference |
+| [bge-m3](./pytorch/Embedding/bge_m3)  | Inference |
+| [YOLOV5](./pytorch/cv/yolov5)  | Training/Inference |
+| [YOLOV5](./pytorch/cpp/)  | Inference-cpp |
+| [YOLOV7](./pytorch/cv/yolov7/) | Training/Inference |
+| [YOLOV8](./pytorch/cv/yolov8/) | Training/Inference |
+| [Resnet50](./pytorch/cv/resnet50/) | Training/Inference |
+| [bert](./pytorch/nlp/bert/) | Training |
+| [whisper](./pytorch/speech/whisper/) | Training/Inference |
+| [maskrcnn](./pytorch/cv/maskrcnn/) | Training/Inference |
+| [SwinTransformer](./pytorch/cv/swin_transformer/) | Training/Inference |
+| [StableDiffusion-v1.5](./pytorch/multimodal/sd_1.5) | Training/Inference |
+| [StableDiffusion-v2.1](./pytorch/multimodal/sd_2.1) | Inference |
+| [StableDiffusion-xl](./pytorch/multimodal/sdxl) | Inference |
+| [GOT-OCR](./pytorch/huggingface_demo/GOT-OCR) | Inference |
+| [Llama-3.2-3B-Instruct](./pytorch/huggingface_demo/Llama-3.2-3B-Instruct) | Inference |
+| [Meta-Llama-3-8B](./pytorch/huggingface_demo/Meta-Llama-3-8B) | Inference |
+| [Mistral-7B-v0.1](./pytorch/huggingface_demo/Mistral-7B-v0.1) | Inference |
+| [Qwen-VL-Chat](./pytorch/huggingface_demo/Qwen-VL-Chat) | Inference |
+| [Qwen2-7B](./pytorch/huggingface_demo/Qwen2-7B) | Inference |
+| [Qwen2.5-7B-Instruct](./pytorch/huggingface_demo/Qwen2.5-7B-Instruct) | Inference |
+| [llava-interleave-qwen-0.5b-hf](./pytorch/huggingface_demo/llava-interleave-qwen-0.5b-hf) | Inference |
+
+
+## vLLM
+
+| Models        | Data Type     |
+| ------------  | ------------- |
+| [ChatGLM2](./vllm/models/ChatGLM2)        | FP16          |
+| [ChatGLM3](./vllm/models/ChatGLM3)        | FP16          |
+| [GLM4](./vllm/models/GLM4)        | FP16          |
+| [Llama2](./vllm/models/Llama2)        | FP16          |
+| [Llama3](./vllm/models/Llama3)        | FP16          |
+| [Qwen2](./vllm/models/Qwen2)        | FP16          |
 
 
 
-## Getting started
+## Open Resources
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### [Torch_musa](https://github.com/MooreThreads/torch_musa)
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- [开发者文档](https://github.com/MooreThreads/torch_musa/blob/main/docs/)
+- [开发者镜像文档](https://mcconline.mthreads.com/repo/musa-pytorch-dev-public?repoName=musa-pytorch-dev-public&repoNamespace=mcconline&displayName=Pytorch%20on%20MUSA%20Dev)
+- [用户镜像文档](https://mcconline.mthreads.com/repo/musa-pytorch-release-public?repoName=musa-pytorch-release-public&repoNamespace=mcconline&displayName=Pytorch%20on%20MUSA%20Release)
 
-## Add your files
+### [vLLM文档](https://docs.mthreads.com/mtt/mtt-doc-online/)
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+### [MTTransformer镜像文档](https://mcconline.mthreads.com/repo/musa-pytorch-transformer?repoName=musa-pytorch-transformer&repoNamespace=mcconline&displayName=MT%20Transformer%20Release)
 
-```
-cd existing_repo
-git remote add origin https://sh-code.mthreads.com/ai/examples_on_musa.git
-git branch -M master
-git push -uf origin master
-```
+### [摩尔学院](https://academy.mthreads.com/)
 
-## Integrate with your tools
+### [摩尔线程开发者网站](https://developer.mthreads.com/)
 
-- [ ] [Set up project integrations](https://sh-code.mthreads.com/ai/examples_on_musa/-/settings/integrations)
+- [摩尔线程博客中心](https://blog.mthreads.com/blog/musa/)
 
-## Collaborate with your team
+- [摩尔线程文档中心](https://docs.mthreads.com/)
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+- [摩尔线程GPU监控和管理工具](https://docs.mthreads.com/gmc/gmc-doc-online/user_manual/)
 
-## Test and Deploy
+- [摩尔线程云原生套件安装及使用文档](https://docs.mthreads.com/cloud-native/cloud-native-doc-online/introduction/)
 
-Use the built-in continuous integration in GitLab.
+### [摩尔线程CSDN社区](https://bbs.csdn.net/forums/mthreads)
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+### [镜像仓库](https://mcconline.mthreads.com/repo)

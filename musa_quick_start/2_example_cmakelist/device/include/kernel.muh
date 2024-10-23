@@ -1,0 +1,6 @@
+/* device/include/kernel.muh */
+#pragma once
+template<int s>
+__global__ void func_kernel(float *x, float *y, float a) {
+  y[threadIdx.x] = s * a * x[threadIdx.x];
+}

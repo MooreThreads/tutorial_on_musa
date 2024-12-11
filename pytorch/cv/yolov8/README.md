@@ -31,7 +31,7 @@ yum install -y mesa-libGL
 apt install -y libgl1-mesa-dev
 
 git clone https://github.com/ultralytics/ultralytics.git
-musa-converter -r ultralytics/ -l ultralytics/test/test_python.py
+musa-converter -r ultralytics/ -l ultralytics/tests/test_python.py
 cd ultralytics && mkdir -p runs/detect/train
 # 由于 ultralytics 的检测pytorch 版本的方法有问题，导致torch_musa的amp没有正确使用，所以需要手动修改一下
 vim ultralytics/utils/torch_utils.py +104

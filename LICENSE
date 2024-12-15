@@ -33,3 +33,13 @@ This repository, hosted on GitHub, is designed as a comprehensive tutorial resou
 Key Features and Contents:
 1.	Demonstrative Examples: The repository contains a rich collection of sample codes and executable scripts. These examples are meticulously crafted to showcase real-world scenarios, illustrating how to effectively load, configure, and run large models on A Company's hardware. By following these examples, developers can quickly grasp the key procedures and best practices, significantly reducing the learning curve and development time.
 2.	Third-Party Open Source Model Integration: To enhance the practicality and versatility of the tutorial, we have incorporated certain third-party open source model codes in this repository only as demonstration examples solely. It's crucial to note that these third-party open source models are the intellectual property of their respective third-party rights holders. Please review and comply with the terms and conditions stipulated in their license agreements when you utilize these third-party open source models.
+
+-----------------------------------------------------------------------------
+This repository budles varous third-party components under other open source licenses.
+This section summarizes those components and their licenses. See licenses/
+for text of these licenses.
+
+
+License in CUDA-Programming(https://github.com/brucefan1983/CUDA-Programming/blob/master/LICENSE)
+-----------------------------------------------------------------------------
+musify_quick_start/example/musify_matrix_transpose/src/

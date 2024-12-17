@@ -1,7 +1,7 @@
 ## 一. Build with docker
 ### 推荐，可以使用llama.cpp全部功能
 ### 1. Start docker
-启动命令可参考: [README.md](../../README.md)
+启动命令可参考: [README.md](../pytorch/README.md)
 
 ### 2. Prepare scripts
 ```

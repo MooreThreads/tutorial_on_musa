@@ -9,16 +9,16 @@ fi
 original_model_path=$1
 tp_size=$2
 
-# Ä¿Ç°Ö§³Öllama, mistral, chatglm2, baichuan, qwen, qwen2, yayi£»
-# mistralºÍllamaÍ¬¹¹£¬model_typeÒ²¿ÉÒÔÌîllama£»
-# chatglm2ºÍchatglm3Í¬¹¹£¬model_type¶¼ÊÇchatglm2£»
-# Qwen1.5ºÍQwen2Í¬¹¹£¬model_type¶¼ÊÇqwen2£¬µ«ÊÇQwenµÄÒÀÈ»ÊÇqwen£»
-# baichuan, baichuan2£¬model_type¶¼ÊÇbaichuan
+# ç›®å‰æ”¯æŒllama, mistral, chatglm2, baichuan, qwen, qwen2, yayiï¼›
+# mistralå’ŒllamaåŒæ„ï¼Œmodel_typeä¹Ÿå¯ä»¥å¡«llamaï¼›
+# chatglm2å’Œchatglm3åŒæ„ï¼Œmodel_typeéƒ½æ˜¯chatglm2ï¼›
+# Qwen1.5å’ŒQwen2åŒæ„ï¼Œmodel_typeéƒ½æ˜¯qwen2ï¼Œä½†æ˜¯Qwençš„ä¾ç„¶æ˜¯qwenï¼›
+# baichuan, baichuan2ï¼Œmodel_typeéƒ½æ˜¯baichuan
 model_type=$3
 
 model_name=$(basename "$original_model_path")
 model_dir=$(dirname "$original_model_path")
-saved_dir="${model_dir}/${model_name%.*}-tp${tp_size}-convert"
+saved_dir="${model_dir}_convert/${model_name}-tp${tp_size}-convert"
 mkdir -p "$(dirname "$saved_dir")"
 
 if [ -z "$model_type" ]; then

@@ -1,13 +1,21 @@
 #  Image list
 
-- kuae1.2.0 : `registry.mthreads.com/mcctest/musa-pytorch-transformer-vllm:v0.1.4-kuae1.2`
-- kuae1.3.0 : `registry.mthreads.com/mcctest/musa-pytorch-transformer-vllm:v0.1.4-kuae1.3`
+|KuaE version |	 Driver version | Driver date |	Docker image |
+| ---- | --- | --- | ----|
+|1.3.0|	2.7.0| 20241017	|	registry.mthreads.com/mcconline/mtt-vllm-public:v0.2.0-kuae1.3.0|
+|1.2.0|	1.2.0|	 |	registry.mthreads.com/mcconline/mtt-vllm-public:v0.1.4-kuae1.2.0|
 
-> "kuae1.x.0" is the driver version, you can check your driver version with the command `clinfo | grep 'Driver Version'`
+> Please refer to [README](../pytorch/README.md) for the method to check the driver.
 >
 > We have only verified the above images on the S4000 machine
 
-
+# Start Docker Container
+**请按照实际驱动环境，参考上述表格，更换启动docker命令中镜像名**
+```bash
+# Please select an appropriate Docker image based on the driver version and refer to the content above.
+sudo docker run -it --privileged --net host --name=vllm_mtt_test -w /workspace -v /data/mtt/:/data/mtt/ --env MTHREADS_VISIBLE_DEVICES=all --shm-size=80g registry.mthreads.com/mcconline/mtt-vllm-public:v0.2.0-kuae1.3.0 /bin/bash
+```
+> The default model path is stored at /data/mtt, if you do not have access to /data, the directory map can be replaced with < customed_directory >:/data/mtt/ or whatever you prefer
 
 # Check vLLM Image
 

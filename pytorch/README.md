@@ -15,15 +15,15 @@ mthreads-gmi
 
 | Driver Version | GPU |Docker Image |
 | ---- | --- | --- |
-| **Driver Version 20241017** | S4000 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S4000-py38 |
-| **Driver Version 20241017** | S3000 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S3000-py38 |
-| **Driver Version 20241017** | S80 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S80-py38 |
+| **Driver Version 20241025** | S4000 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S4000-py38 |
+| **Driver Version 20241025** | S3000 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S3000-py38 |
+| **Driver Version 20241025** | S80 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S80-py38 |
 
 </details> 
 
-**NOTE:** Python3.9和Python3.10请分别使用“py39”和“py310”替换上述镜像中“py38”.
+**NOTE: Python3.9和Python3.10请分别使用“py39”和“py310”替换上述镜像中“py38”.**
 
-
+**请按照实际驱动环境，参考上述表格，更换启动docker命令中镜像名**
 ```bash
 # S4000 Python3.8
 docker run -it --privileged --pull always --network=host --name=torch_musa_test -w /home/workspace -v /data:/data --env MTHREADS_VISIBLE_DEVICES=all --shm-size=80g registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S4000-py38 /bin/bash

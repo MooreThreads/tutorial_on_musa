@@ -8,11 +8,7 @@
 
 ### 2.1 Start Docker Container
 
-```bash
-sudo docker run -it --privileged --net host --name=vllm_mtt_test -w /workspace -v /data/mtt/:/data/mtt/ --env MTHREADS_VISIBLE_DEVICES=all --shm-size=80g registry.mthreads.com/mcctest/musa-pytorch-transformer-vllm:v0.1.4-kuae1.2 /bin/bash
-```
-
-> 1. The default model path is stored at `/data/mtt`, if you do not have access to `/data`, the directory map can be replaced with `< customed_directory >:/data/mtt/` or whatever you prefer
+Refer to the [README.md](../../README.md)
 
 ### 2.2 Clone Model
 

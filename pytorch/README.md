@@ -15,9 +15,9 @@ mthreads-gmi
 
 | Driver Version | GPU |Docker Image |
 | ---- | --- | --- |
-| **Driver Version 20241017** | S4000 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S4000-py38 |
-| **Driver Version 20241017** | S3000 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S3000-py38 |
-| **Driver Version 20241017** | S80 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S80-py38 |
+| **Driver Version 20241025** | S4000 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S4000-py38 |
+| **Driver Version 20241025** | S3000 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S3000-py38 |
+| **Driver Version 20241025** | S80 | registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S80-py38 |
 
 </details> 
 

@@ -1,4 +1,4 @@
-# ChatGLM2 
+# Baichuan2
 
 ## 1. Supported Models
 

@@ -18,9 +18,10 @@ mkdir -p /data/mtt/models /data/mtt/models_convert
 
 # 2. clone model
 cd /data/mtt/models
+git lfs install
 git clone xxxxx    # Please download glm-4-9b-chat model by yourself!
 ```
-
+> If you encounter any issues while downloading the model, please refer to the [README](../../../llama.cpp/README.md).
 ### 2.3 Weight Conversion
 
 ```bash

@@ -18,9 +18,10 @@ mkdir -p /data/mtt/models /data/mtt/models_convert
 
 # 2. clone model
 cd /data/mtt/models
+git lfs install
 git clone https://www.modelscope.cn/LLM-Research/Meta-Llama-3-8B-Instruct.git
 ```
-
+> If you encounter any issues while downloading the model, please refer to the [README](../../../llama.cpp/README.md).
 ### 2.3 Weight Conversion
 
 ```bash

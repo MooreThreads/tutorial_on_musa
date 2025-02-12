@@ -19,10 +19,11 @@ mkdir -p /data/mtt/models /data/mtt/models_convert
 
 # 2. clone model
 cd /data/mtt/models
+git lfs install
 git clone https://www.modelscope.cn/Qwen/Qwen2-7B-Instruct.git
 # git clone https://www.modelscope.cn/Qwen/Qwen2-72B-Instruct.git
 ```
-
+> If you encounter any issues while downloading the model, please refer to the [README](../../../llama.cpp/README.md).
 ### 2.3 Weight Conversion
 
 ```bash

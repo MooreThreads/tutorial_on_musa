@@ -20,11 +20,12 @@ mkdir -p /data/mtt/models /data/mtt/models_convert
 
 # 2. clone model
 cd /data/mtt/models
+git lfs install
 git clone https://www.modelscope.cn/shakechen/Llama-2-7b-hf.git
 # git clone https://www.modelscope.cn/ydyajyA/Llama-2-13b-hf.git
 # git clone https://www.modelscope.cn/AI-ModelScope/Llama-2-70b-hf.git
 ```
-
+> If you encounter any issues while downloading the model, please refer to the [README](../../../llama.cpp/README.md).
 ### 2.3 Weight Conversion
 
 ```bash

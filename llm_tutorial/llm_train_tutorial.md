@@ -1,6 +1,8 @@
 # LLM大模型训练用户指南
 本文主要介绍如何通过DeepSpeed和Megatron拉起llm类大模型训练，具体目录如下，可点击跳转。
+
 -[环境准备](#环境准备)
+
 -[使用DeepSpeed拉起Qwen2.5-7B训练](#使用DeepSpeed拉起Qwen2.5-7B训练)
 ---
 
@@ -34,6 +36,7 @@ docker run -it --privileged --net host --name=model_train -w /workspace -v /data
 ![图2-1：huggineface中qwen模型文件说明](../resources/hf_modelfile_qwen.png)
 ![图2-2：huggineface中modeling_xxx文件](../resources/hf_modelfile_deepseek.png)
 以Qwen2.5-7b为例：下载config.json、generation_config.json、merges.txt、tokenizer.json、tokenizer_config.json、vocab.json文件，将文件放到/home/musify_hub/deepspeed/qwen2_5_7b/目录下,可参考图2-1
+
 注：
 * 如果是预训练，模型权重文件可以不用下载。如图2-1qwen网络已在transformers中支持，作者就没有在huggineface等社区上传模型代码文件。如图2-2deepspeek有上传模型代码文件（一般为modeling_xxx.py）则需要下载
 * 部分模型在transformers以支持，则不需要下载模型代码

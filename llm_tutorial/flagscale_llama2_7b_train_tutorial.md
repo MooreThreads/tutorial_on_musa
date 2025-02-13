@@ -1,5 +1,5 @@
 # LLM大模型训练用户指南
-本文主要介绍如何通过DeepSpeed和Megatron拉起llm类大模型训练，具体目录如下，可点击跳转。
+本文主要介绍如何通过FlagScale拉起llm类大模型训练，具体目录如下，可点击跳转。
 
 -[环境准备](#环境准备)
 
@@ -51,7 +51,7 @@ bash pretrain_llama_7b_distribute.sh
 * DATA_DIR 数据集目录
 * DATA_CACHE_PATH 数据集缓存目录
 ### 结果检查
-日志保存在 output/()时间戳)/ 中，正常训练下日志可参考下图2-1
+日志保存在 output/()时间戳)/ 中，可新开一个窗口查看日志，正常训练下日志可参考下图2-1
 ![图2-1：使用FlagScale训练llama日志内容](../resources/flagscale_llama_log.png)
 <center>图2-1：使用FlagScale训练llama日志内容</center> 
 

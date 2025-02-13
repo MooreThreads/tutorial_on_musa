@@ -13,8 +13,9 @@
 ```
 mthreads-gmi
 ```
-![图1-1gmi返回结果](../resources/gmi_success_result.png)
-<center >图1-1gmi返回结果</center> 
+![图1-1：gmi返回结果](../resources/gmi_success_result.png)
+<center>图1-1：gmi返回结果</center> 
+
 ### 容器准备
 使用如下命令拉起kuae镜像
 ```
@@ -34,7 +35,11 @@ docker run -it --privileged --net host --name=model_train -w /workspace -v /data
 ### 下载模型训练代码及模型配置文件
 在[huggineface](https://huggingface.co/)下载需要训练的模型的文件，包含模型代码，模型配置文件，tokenizer、词表等
 ![图2-1：huggineface中qwen模型文件说明](../resources/hf_modelfile_qwen.png)
+<center>图2-1：huggineface中qwen模型文件说明</center> 
+
 ![图2-2：huggineface中modeling_xxx文件](../resources/hf_modelfile_deepseek.png)
+<center>图2-2：huggineface中modeling_xxx文件</center> 
+
 以Qwen2.5-7b为例：下载config.json、generation_config.json、merges.txt、tokenizer.json、tokenizer_config.json、vocab.json文件，将文件放到/home/musify_hub/deepspeed/qwen2_5_7b/目录下,可参考图2-1
 
 注：
@@ -59,6 +64,8 @@ bash run_qwen2_5.sh
 ### 结果检查
 日志保存在 output_qwen2_5_7b/training.log 中，正常训练下日志可参考下图2-3
 ![图2-3：使用DeepSpeed训练Qwen日志内容](../resources/deepspeed_qwen_train_result.png)
+<center>图2-3：使用DeepSpeed训练Qwen日志内容</center> 
+
 ### 停止训练
 ```
 #手工杀掉进程(ctrl+c)，如果配置了ssh免密登录，可以使用以下命令

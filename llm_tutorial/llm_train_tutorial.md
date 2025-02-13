@@ -14,6 +14,7 @@
 mthreads-gmi
 ```
 ![图1-1gmi返回结果](../resources/gmi_success_result.png)
+<center >图1-1gmi返回结果</center> 
 ### 容器准备
 使用如下命令拉起kuae镜像
 ```

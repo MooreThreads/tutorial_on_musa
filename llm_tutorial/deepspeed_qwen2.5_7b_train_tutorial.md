@@ -31,6 +31,7 @@ docker run -it --privileged --net host --name=model_train -w /workspace -v /data
 |驱动版本|软件栈版本|对应镜像|
 |---|---|---|
 |20241025 release kuae1.3.0_musa3.1.0|kuae1.3|sh-harbor.mthreads.com/mcc/test/mt-ai-kuae-qy2:v1.3.0-release-1031|
+
 驱动版本可使用如下命令查询
 ```
 clinfo | grep "Driver"

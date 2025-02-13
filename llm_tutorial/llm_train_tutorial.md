@@ -3,7 +3,7 @@
 
 -[环境准备](#环境准备)
 
--[使用DeepSpeed拉起Qwen2.5-7B训练](#使用DeepSpeed拉起Qwen2.5-7B训练)
+-[DeepSpeed训练](#DeepSpeed训练)
 
 
 ## 环境准备
@@ -28,8 +28,8 @@ docker run -it --privileged --net host --name=model_train -w /workspace -v /data
 软件栈和镜像对应关系可参考下表
 |软件栈版本|对应镜像|
 |---|---|
-|kuae1.3|registry.mthreads.com/mcconline/mtt-vllm-public:v0.2.0-kuae1.3.0|
-## 使用DeepSpeed拉起Qwen2.5-7B训练
+|kuae1.3|sh-harbor.mthreads.com/mcc/test/mt-ai-kuae-qy2:v1.3.0-release-1031|
+## DeepSpeed训练
 ### 下载模型训练代码及模型配置文件
 在[huggineface](https://huggingface.co/)下载需要训练的模型的文件，包含模型代码，模型配置文件，tokenizer、词表等
 ![图2-1：huggineface中qwen模型文件说明](../resources/hf_modelfile_qwen.png)

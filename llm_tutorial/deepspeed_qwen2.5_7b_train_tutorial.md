@@ -28,9 +28,13 @@ docker run -it --privileged --net host --name=model_train -w /workspace -v /data
 * sh-harbor.mthreads.com/mcc/test/mt-ai-kuae-qy2:v1.3.0-release-1031 镜像名
 
 软件栈和镜像对应关系可参考下表
-|软件栈版本|对应镜像|
-|---|---|
-|kuae1.3|sh-harbor.mthreads.com/mcc/test/mt-ai-kuae-qy2:v1.3.0-release-1031|
+|驱动版本|软件栈版本|对应镜像|
+|---|---|---|
+|20241025 release kuae1.3.0_musa3.1.0|kuae1.3|sh-harbor.mthreads.com/mcc/test/mt-ai-kuae-qy2:v1.3.0-release-1031|
+驱动版本可使用如下命令查询
+```
+clinfo | grep "Driver"
+```
 ## DeepSpeed训练
 ### 下载模型训练代码及模型配置文件
 在[huggineface](https://huggingface.co/)下载需要训练的模型的文件，包含模型代码，模型配置文件，tokenizer、词表等

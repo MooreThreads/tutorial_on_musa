@@ -2,8 +2,8 @@
 本文主要介绍如何通过DeepSpeed和Megatron拉起llm类大模型训练，具体目录如下，可点击跳转。
 
 -[环境准备](#环境准备)
+
 -[使用DeepSpeed拉起Qwen2.5-7B训练](#使用DeepSpeed拉起Qwen2.5-7B训练)
----
 
 
 ## 环境准备

@@ -48,7 +48,30 @@ python generate_chat.py -ckpt <model_path>
 
 more demos(base on kuae1.2 driver version): [models](./models)
 
+# Stream Demo
 
+Here is an example:
+```bash
+# Start Server
+ python -m vllm.entrypoints.openai.api_server     
+        --model /data/mtt/models_convert/DeepSeek-R1-Distill-Qwen-7B-tp1-convert/  \
+        --trust-remote-code                                                        \
+        --tensor-parallel-size 1                                                   \
+        -pp 1                                                                      \
+        --block-size 64                                                            \
+        --max-model-len 2048                                                       \
+        --disable-log-stats                                                        \
+        --disable-log-requests                                                     \
+        --device "musa"                                                            \
+        --served-model-name deepseek_test
+```
+
+```bash
+# Start Clinet Demo
+python stream_chat.py --model-id deepseek_test
+```
+
+**ATTENTION**: Users can modify the actual `--model` and `--served-model-name` parameters while starting the server as needed. However, as running `stream_chat.py`, the `--model-id` parameter should be passed as same as the `--served-model-name` parameter. If `--served-model-name` was not used, then the `--model` parameter should be passed to `--model-id` when running stream_chat.
 
 # Benchmarks
 

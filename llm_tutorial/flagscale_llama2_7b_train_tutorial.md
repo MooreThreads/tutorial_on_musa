@@ -19,7 +19,7 @@ mthreads-gmi
 ### 容器准备
 使用如下命令拉起kuae镜像
 ```
-docker run -it --privileged --net host --name=model_train -w /workspace -v /data:/data --env MTHREADS_VISIBLE_DEVICES=all --shm-size=80g sh-harbor.mthreads.com/mcc/test/mt-ai-kuae-qy2:v1.3.0-release-1031 /bin/bash 
+docker run -it --privileged --net host --name=model_train -w /workspace -v /data:/data --env MTHREADS_VISIBLE_DEVICES=all --shm-size=80g registry.mthreads.com/mcctest/mt-ai-kuae-qy2:v1.3.0-release-1031-ggn /bin/bash 
 ```
 关键参数解释
 * --name=model_train 指定容器名称，不能和其他容器重名
@@ -30,7 +30,7 @@ docker run -it --privileged --net host --name=model_train -w /workspace -v /data
 软件栈和镜像对应关系可参考下表
 |驱动版本|软件栈版本|对应镜像|
 |---|---|---|
-|20241025 release kuae1.3.0_musa3.1.0|kuae1.3|sh-harbor.mthreads.com/mcc/test/mt-ai-kuae-qy2:v1.3.0-release-1031|
+|20241025 release kuae1.3.0_musa3.1.0|kuae1.3|registry.mthreads.com/mcctest/mt-ai-kuae-qy2:v1.3.0-release-1031-ggn|
 
 驱动版本可使用如下命令查询
 ```

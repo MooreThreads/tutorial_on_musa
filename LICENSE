@@ -40,6 +40,6 @@ This section summarizes those components and their licenses. See licenses/
 for text of these licenses.
 
 
-License in CUDA-Programming(https://github.com/brucefan1983/CUDA-Programming/blob/master/LICENSE)
+License in third-party code repository(https://github.com/brucefan1983/CUDA-Programming/blob/master/LICENSE)
 -----------------------------------------------------------------------------
 musify_quick_start/example/musify_matrix_transpose/src/

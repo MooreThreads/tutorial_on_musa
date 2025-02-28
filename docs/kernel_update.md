@@ -25,8 +25,6 @@ grep menuentry /boot/grub/grub.cfg
 
 #### 1.2.1 编辑grub文件
 
-*   方式一
-
 ```shell
 $ sudo vi /etc/default/grub
 
@@ -40,38 +38,4 @@ GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux 5.15.0-105-generic"
 sudo update-grub
 sudo reboot
 ```
-
-#### 1.2.3 未生效处理
-
-如果安装上面操作发现Kernel版本没有切换到预期版本, 做如下尝试:
-
-1.  查看安装的kernel版本列表
-
-```shell
-$ grep -n 'submenu\|menuentry' /boot/grub/grub.cfg
-```
-
-![image.png](images/kernel_install.png)
-
-
-2.  编辑/etc/default/grub
-
-```shell
-# 1. 编辑
-sudo vim /etc/default/grub
-
-# 2. 配置默认启动项
-GRUB_DEFAULT="1>2"
-```
-
-> 结合上图示例（实际推荐版本为`5.15.0-105-generic`）, 选择启动项编号：
-
-*   `0`: 默认条目 `Ubuntu`。
-
-*   `1>`: `submenu` -> **高级选项**：
-
-    *   `0`: `Ubuntu，Linux 5.15.0-127-generic`。
-
-    *   `1`: `Ubuntu, with Linux 5.15.0-127-generic (recovery mode)`。
-
-    *   `2`: `**Ubuntu，Linux 5.4.0-42-generic**`。
+> 若以上方法未生效，可以在当前项目中提issue反馈

@@ -80,3 +80,30 @@ ID   Name           |PCIe                |%GPU  Mem
 **问题描述**: 在 docker container 内部使用 torch_musa 时，报错 ImportError: libsrv_um_MUSA.so: cannot open shared object file: No such file or directory 或者 ImportError: /usr/lib/x86_64-linux-gnu/musa/libsrv_um_MUSA.so: file too short ？
 
 **解决方法**: mt-container-toolkit 未安装或者安装之后未绑定摩尔线程容器运行时到 Docker. 详情参考: [安装指导 | 摩尔线程文档中心](https://docs.mthreads.com/cloud-native/cloud-native-doc-online/install_guide)
+
+
+
+#### 7. sgpu-dkms未成功安装
+**问题描述**: 安装sgpu-dkms (mt-container-toolkit的依赖包) 时报错:
+
+![FAQ_sgpu-dkms](../docs/images/FAQ_sgpu-dkms.png)
+
+**解决方法**: 将sgpu-dkms不支持的高版本Kernel(不是当前正在运行的Kernel)移除即可:
+
+```shell
+# 1. 查看已安装Kernel版本(假设6.8.0-52版本存在)
+dpkg --list | grep linux-image
+dpkg --list | grep linux-headers
+
+# 2. 将报错的高版本Kernel移除
+sudo apt remove --purge linux-image-6.8.0-52-generic linux-headers-6.8.0-52-generic
+
+# 3. 更新grub并重启
+sudo update-grub
+sudo reboot
+
+# 4. 检验是否删除
+dpkg --list | grep linux-image
+#  注: 如果上述方法依然无法彻底删除对应Kernel, 可以删除/lib/modules/6.8.0-52-generic目录
+```
+

@@ -26,6 +26,7 @@ else
 fi
 
 # 转换权重
+cd ..
 ./convert_weight.sh "$MODEL_DIR/$MODEL_NAME" 1
 
 # 启动服务

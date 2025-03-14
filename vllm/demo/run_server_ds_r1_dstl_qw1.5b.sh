@@ -7,14 +7,13 @@ CONVERTED_MODEL_DIR="/data/mtt/models_convert"
 MODEL_NAME="DeepSeek-R1-Distill-Qwen-1.5B"
 MODEL_URL="https://www.modelscope.cn/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B.git"
 LOG_FILE="/data/mtt/logs/model_server.log"
-MODEL_CHECK_FILE="$MODEL_DIR/$MODEL_NAME/model.safetensors"  # 检查的模型文件
+MODEL_CHECK_FILE="$MODEL_DIR/$MODEL_NAME/model.safetensors"  
+SUCCESS_MESSAGE="INFO:     Started server process"
 
-# 确保目录存在
 mkdir -p "$MODEL_DIR"
 mkdir -p "$CONVERTED_MODEL_DIR"
 mkdir -p "$(dirname "$LOG_FILE")"
 
-# 检查模型文件是否存在
 if [ -f "$MODEL_CHECK_FILE" ]; then
     echo "模型文件已存在，跳过下载步骤。"
 else
@@ -25,11 +24,9 @@ else
     echo "模型下载完成。"
 fi
 
-# 转换权重
 cd ..
 ./convert_weight.sh "$MODEL_DIR/$MODEL_NAME" 1
 
-# 启动服务
 python -m vllm.entrypoints.openai.api_server \
         --model "$CONVERTED_MODEL_DIR/$MODEL_NAME-tp1-convert" \
         --trust-remote-code \
@@ -43,6 +40,13 @@ python -m vllm.entrypoints.openai.api_server \
         --served-model-name deepseek_test > "$LOG_FILE" 2>&1 &
 
 pid=$!
-wait $pid
-
-echo "服务已启动，日志文件位于: $LOG_FILE"
+echo "等待服务启动..."
+while true; do
+    if grep -q "$SUCCESS_MESSAGE" "$LOG_FILE"; then
+        echo "服务已成功启动，日志文件位于: $LOG_FILE"
+        break
+    else
+        echo "等待服务启动中..."
+        sleep 5  # 每隔 5 秒检查一次日志文件
+    fi
+done

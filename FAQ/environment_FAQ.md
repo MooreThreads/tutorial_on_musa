@@ -107,3 +107,18 @@ dpkg --list | grep linux-image
 #  注: 如果上述方法依然无法彻底删除对应Kernel, 可以删除/lib/modules/6.8.0-52-generic目录
 ```
 
+#### 8. vllm单卡推理成功，但多卡推理失败
+
+**问题描述**：使用mtt_vllm 跑小模型单卡推理成功，但是跑大模型四卡推理有问题，报错：
+![FAQ_vllm](../docs/images/FAQ_ENV_t8.jpg)
+
+**解决方法**: 
+```shell
+# 1. 开启IOMMU，关掉pcie switch的acs
+# 注：如果是amd或者是hygon CPU，替换intel_iommu为amd_iommu
+sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="intel_iommu=on iommu.passthrough=0 pci=disable_acs_redir=pci:1000:c030"/' /etc/default/grub
+
+# 2. 更新grub并重启
+sudo update-grub
+sudo reboot
+```

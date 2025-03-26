@@ -2,6 +2,7 @@
 set -e
 
 # 定义路径和参数
+CURRENT_DIR=$(pwd)
 MODEL_DIR="/data/mtt/models"
 CONVERTED_MODEL_DIR="/data/mtt/models_convert"
 MODEL_NAME="DeepSeek-R1-Distill-Qwen-1.5B"
@@ -24,7 +25,7 @@ else
     echo "模型下载完成。"
 fi
 
-cd ..
+cd "${CURRENT_DIR}/.."
 ./convert_weight.sh "$MODEL_DIR/$MODEL_NAME" 1
 
 python -m vllm.entrypoints.openai.api_server \

@@ -10,14 +10,14 @@ if [ -z "$MODEL_NAME" ]; then
     exit 1
 fi
 
-# 用 Python 解析 JSON 获取 URL
-MODEL_URL=$(python3 -c "
+read MODEL_URL TENSOR_PARALLEL_SIZE <<< $(python3 -c "
 import json
 config_file = '$CONFIG_FILE'
 model_name = '$MODEL_NAME'
 with open(config_file, 'r') as f:
     data = json.load(f)
-print(data.get(model_name, ''))
+info = data.get(model_name, {})
+print(info.get('url', ''), info.get('tensor_parallel_size', ''))
 ")
 
 if [ -z "$MODEL_URL" ]; then
@@ -25,7 +25,8 @@ if [ -z "$MODEL_URL" ]; then
     exit 1
 fi
 
-echo "√ 找到模型 URL: $MODEL_URL"
+echo "√ Find Succeed: $MODEL_URL"
+echo "√ tensor_parallel_size: $TENSOR_PARALLEL_SIZE"
 
 # 目录和日志路径
 CURRENT_DIR=$(pwd)
@@ -52,13 +53,13 @@ fi
 
 # 权重转换
 cd "${CURRENT_DIR}/.."
-./convert_weight.sh "$MODEL_DIR/$MODEL_NAME" 1
+./convert_weight.sh "$MODEL_DIR/$MODEL_NAME" $TENSOR_PARALLEL_SIZE
 
 # 启动 vLLM 服务器
 python -m vllm.entrypoints.openai.api_server \
-        --model "$CONVERTED_MODEL_DIR/$MODEL_NAME-tp1-convert" \
+        --model "$CONVERTED_MODEL_DIR/$MODEL_NAME-tp$TENSOR_PARALLEL_SIZE-convert" \
         --trust-remote-code \
-        --tensor-parallel-size 1 \
+        --tensor-parallel-size $TENSOR_PARALLEL_SIZE \
         -pp 1 \
         --block-size 64 \
         --max-model-len 2048 \

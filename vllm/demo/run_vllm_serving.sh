@@ -6,7 +6,12 @@ CONFIG_FILE="model_config.json"
 
 if [ -z "$MODEL_NAME" ]; then
     echo "× Please provide the model name, for example:"
-    echo "   ./run_vllm_serving.sh DeepSeek-R1-Distill-Qwen-1.5B"
+    echo "  ./run_vllm_serving.sh DeepSeek-R1-Distill-Qwen-1.5B"
+    exit 1
+fi
+
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "× Error: Config file $CONFIG_FILE not found! Please make sure it exists."
     exit 1
 fi
 
@@ -21,7 +26,7 @@ print(info.get('url', ''), info.get('tensor_parallel_size', ''))
 ")
 
 if [ -z "$MODEL_URL" ]; then
-    echo "× $MODEL_NAME is not supported yet, please refer to the website to try other models: https://docs.mthreads.com/mtt/mtt-doc-online/compability"
+    echo "× $MODEL_NAME is not supported, please refer to the website to try other models: https://docs.mthreads.com/mtt/mtt-doc-online/compability"
     exit 1
 fi
 

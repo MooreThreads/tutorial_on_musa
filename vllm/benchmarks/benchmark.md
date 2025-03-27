@@ -57,7 +57,29 @@ python benchmark_serving.py  \
 	--backend <backend> # By default <backend> is vllm
 	--dataset-path ShareGPT_V3_unfiltered_cleaned_split.json  \
 	--dataset-name sharegpt  \
-    --model /data/mtt/models_convert/<convert_model_dir>  \
-    --trust-remote-code
-    --num-prompts <num_prompts> # By default <num_prompts> is 1000
+        --model /data/mtt/models_convert/<convert_model_dir>  \
+        --trust-remote-code  \
+        --num-prompts <num_prompts> # By default <num_prompts> is 1000
 ```
+
+## 最大并发数、指定输入输出长度
+如需指定最大并发数和输入输出长度，请将本目录下benchmark_serving.py拷贝到/home/workspace/vllm_mtt/benchmarks下
+```shell
+python benchmark_serving.py  \
+           --backend vllm   \
+           --dataset-name random  \
+           --model /data/mtt/models_convert/<convert_model_dir>  \
+           --trust-remote-code  \
+           --num-prompts 1000   \
+           --random-input-len 1024   \
+           --random-output-len 128  \
+           --max-concurrency 128
+```
+### 参数说明
+
+|参数|含义|
+|---|---|
+|--max-concurrency|最大并发数|
+|--random-input-len|使用随机数时输入长度|
+|--random-output-len|输出长度|
+|--dataset-name|指定输入数据为随机数生成|

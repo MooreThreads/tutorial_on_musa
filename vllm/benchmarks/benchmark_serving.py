@@ -52,6 +52,9 @@ class BenchmarkMetrics:
     mean_tpot_ms: float
     median_tpot_ms: float
     p99_tpot_ms: float
+    mean_e2el_ms: float
+    median_e2el_ms: float
+    p99_e2el_ms: float
 
 
 def sample_sharegpt_requests(
@@ -236,6 +239,7 @@ def calculate_metrics(
     completed = 0
     tpots = []
     ttfts = []
+    e2els = []
     for i in range(len(outputs)):
         if outputs[i].success:
             output_len = len(tokenizer(outputs[i].generated_text).input_ids)
@@ -245,6 +249,7 @@ def calculate_metrics(
                 tpots.append(
                     (outputs[i].latency - outputs[i].ttft) / (output_len - 1))
             ttfts.append(outputs[i].ttft)
+            e2els.append(outputs[i].latency)
             completed += 1
         else:
             actual_output_lens.append(0)
@@ -263,6 +268,9 @@ def calculate_metrics(
         mean_tpot_ms=np.mean(tpots) * 1000,
         median_tpot_ms=np.median(tpots) * 1000,
         p99_tpot_ms=np.percentile(tpots, 99) * 1000,
+        mean_e2el_ms=np.mean(e2els or 0) * 1000,
+        median_e2el_ms=np.median(e2els or 0) * 1000,
+        p99_e2el_ms=np.percentile(e2els, 99) * 1000,
     )
 
     return metrics, actual_output_lens
@@ -359,6 +367,13 @@ async def benchmark(
     print("{:<40} {:<10.2f}".format("Median TPOT (ms):",
                                     metrics.median_tpot_ms))
     print("{:<40} {:<10.2f}".format("P99 TPOT (ms):", metrics.p99_tpot_ms))
+    print("{s:{c}^{n}}".format(s='Time End-to-end Latency',
+                               n=50,
+                               c='-'))
+    print("{:<40} {:<10.2f}".format("Mean E2EL (ms):", metrics.mean_e2el_ms))
+    print("{:<40} {:<10.2f}".format("Median E2EL (ms):",
+                                    metrics.median_e2el_ms))
+    print("{:<40} {:<10.2f}".format("P99 E2EL (ms):", metrics.p99_e2el_ms))
     print("=" * 50)
 
     result = {
@@ -375,10 +390,14 @@ async def benchmark(
         "mean_tpot_ms": metrics.mean_tpot_ms,
         "median_tpot_ms": metrics.median_tpot_ms,
         "p99_tpot_ms": metrics.p99_tpot_ms,
+        "mean_e2el_ms": metrics.mean_e2el_ms,
+        "median_e2el_ms": metrics.median_e2el_ms,
+        "p99_e2el_ms": metrics.p99_e2el_ms,
         "input_lens": [output.prompt_len for output in outputs],
         "output_lens": actual_output_lens,
         "ttfts": [output.ttft for output in outputs],
         "itls": [output.itl for output in outputs],
+        "e2els": [output.latency for output in outputs],
         "generated_texts": [output.generated_text for output in outputs],
         "errors": [output.error for output in outputs],
     }

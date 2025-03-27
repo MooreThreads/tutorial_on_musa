@@ -36,6 +36,7 @@ def stream_vllm_response(messages, model="deepseek_test"):
                     if "choices" in data and data["choices"]:
                         token = data["choices"][0]["delta"].get("content", "")
                         if token:
+                            print(token, end="", flush=True)
                             token_count += 1
                 except json.JSONDecodeError:
                     continue

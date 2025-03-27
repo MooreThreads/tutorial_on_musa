@@ -1,0 +1,4 @@
+{
+    "DeepSeek-R1-Distill-Qwen-1.5B": "https://www.modelscope.cn/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B.git",
+    "Qwen2.5-0.5B-Instruct": "https://www.modelscope.cn/Qwen/Qwen2.5-0.5B-Instruct.git"
+}

@@ -42,7 +42,7 @@ done
 
 validate_args() {
 if [[ -z "$MODEL" && -z "$CONVERTED_MODEL" && -z "$TASK" ]]; then
-    echo "Usage: $0 --task <model_name> | --model <original_model_path> | --converted-model <converted_model_path> [-tp-size <size>]"
+    echo "Usage: $0 --task <model_name> [--model <original_model_path> | --converted-model <converted_model_path>] [-tp-size <size>]"
     exit 1
 fi
 }

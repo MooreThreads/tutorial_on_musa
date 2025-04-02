@@ -41,7 +41,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 validate_args() {
-if [[ -z "$MODEL" && -z "$CONVERTED_MODEL" && -z "$TASK" ]]; then
+if [[ -z "$TASK" ]]; then
     echo "Usage: $0 --task <model_name> [--model <original_model_path> | --converted-model <converted_model_path>] [-tp-size <tensor_parallel_size>]"
     exit 1
 fi

@@ -197,19 +197,16 @@ wait_for_log_update() {
     local elapsed=0
     local no_change_count=0
 
-    # 确保日志文件存在
-    touch "$log_file"
-
     # 获取初始日志文件大小
     local last_size=$(stat -c%s "$log_file")
 
     while ((elapsed < timeout)); do
-        sleep 10
         local current_size=$(stat -c%s "$log_file")
+	    local last_line=$(tail -n 5 "$log_file" 2>/dev/null | grep -E -v '^[[:space:]]*$')
 
-        echo -e "\e[32m"
-        if [[ "$current_size" -eq "$last_size" ]]; then
-
+        if grep -q -E "Uvicorn running on http://" <<< "$last_line" && \
+	    [ "$current_size" -ne "$last_size" ]; then
+	    echo -e "\e[32m"
             if [ -z "$CONTAINER_NAME" ]; then
                 echo "Please send the following request to obtain the model inference result."
             else
@@ -256,8 +253,9 @@ start_server() {
     local served_model_name="$3"
     
     log_file=$(dirname "$converted_model_path")/model_server.log
+    : > "$log_file"
     echo "Wait for the service to start..."
-    python -m vllm.entrypoints.openai.api_server \
+    PYTHONUNBUFFERED=1 setsid python -m vllm.entrypoints.openai.api_server \
         --model "$converted_model_path" \
         --trust-remote-code \
         --tensor-parallel-size "$tensor_parallel_size" \
@@ -267,7 +265,7 @@ start_server() {
         --disable-log-stats \
         --disable-log-requests \
         --device "musa" \
-        --served-model-name "$served_model_name" "$log_file" 2>&1  &
+        --served-model-name "$served_model_name" 2>&1 | tee -a "$log_file"  &
 
     SERVER_PID=$!
 

@@ -3,11 +3,14 @@
 # 默认值
 MODEL=""
 CONVERTED_MODEL=""
+MODEL_TYPE=""  # 
 TP_SIZE=""
 MODEL_CONFIG_FILE="supported_models.json"
 TIME=$(date "+%Y%m%d_%H%M%S")
-DEFAUTL_MODEL_DIR="/data/musa_develop_demo_$TIME"
-
+DEFAULT_MODEL_DIR="/data/musa_develop_demo_$TIME"
+DOWNLOAD_MODEL_DIR=""
+vLLM_HOST=""
+vLLM_PORT=""
 
 # 解析参数的函数
 parse_args() {
@@ -29,8 +32,24 @@ while [[ $# -gt 0 ]]; do
             TP_SIZE="$2"
             shift 2
             ;;
+        --model-type)
+            MODEL_TYPE="$2"
+            shift 2
+            ;;
         --container-name)
             CONTAINER_NAME="$2"
+            shift 2
+            ;;
+        --download-model-dir)
+            DOWNLOAD_MODEL_DIR="$2"
+            shift 2
+            ;;
+        --vllm-host)
+            vLLM_HOST="$2"
+            shift 2
+            ;;
+        --vllm-port)
+            vLLM_PORT="$2"
             shift 2
             ;;
         *)
@@ -42,6 +61,7 @@ done
 
 validate_args() {
 if [[ -z "$TASK" ]]; then
+    # 隐藏--container-name参数
     echo "Usage: $0 --task <model_name> [--model <original_model_path> | --converted-model <converted_model_path>] [-tp-size <tensor_parallel_size>]"
     exit 1
 fi
@@ -127,10 +147,15 @@ check_and_prepare_model() {
     # 1. 如果只有 model_name, 下载模型
     if [ -z "$model_path" ] && [ -z "$converted_model_path" ]; then
 
-        model_path=$DEFAUTL_MODEL_DIR/$model_name
-        converted_model_path=$DEFAUTL_MODEL_DIR/$model_name-tp$tp_size-converted
+        if [ -z "$DOWNLOAD_MODEL_DIR" ]; then
+            model_path=$DEFAULT_MODEL_DIR/$model_name
+            converted_model_path=$DEFAULT_MODEL_DIR/$model_name-tp$tp_size-converted
 
-        mkdir -p "$model_path" "$converted_model_path"
+            mkdir -p "$model_path" "$converted_model_path"
+        else
+            model_path=$DOWNLOAD_MODEL_DIR/$model_name
+            converted_model_path=$DOWNLOAD_MODEL_DIR/$model_name-tp$tp_size-converted
+        fi
 
         echo -e "\e[32mmodel_path: $model_path\e[0m" >&2
         echo -e "\e[32mconverted_model_path: $converted_model_path\e[0m" >&2
@@ -159,7 +184,7 @@ check_and_prepare_model() {
     fi
 
     if [ -z "$(ls -A $converted_model_path)" ]; then
-        convert_weight $model_path $converted_model_path $tp_size >&2
+        convert_weight $model_path $converted_model_path $tp_size $MODEL_TYPE >&2
     fi
 
     echo "$converted_model_path"
@@ -251,21 +276,36 @@ start_server() {
     local converted_model_path="$1"
     local tensor_parallel_size="$2"
     local served_model_name="$3"
+    local host="$4"
+    local port="$5"
     
     log_file=$(dirname "$converted_model_path")/model_server.log
     : > "$log_file"
     echo "Wait for the service to start..."
-    PYTHONUNBUFFERED=1 setsid python -m vllm.entrypoints.openai.api_server \
-        --model "$converted_model_path" \
+    # 初始化命令
+    command="PYTHONUNBUFFERED=1 setsid python -m vllm.entrypoints.openai.api_server \
+        --model \"$converted_model_path\" \
         --trust-remote-code \
-        --tensor-parallel-size "$tensor_parallel_size" \
+        --tensor-parallel-size \"$tensor_parallel_size\" \
         -pp 1 \
         --block-size 64 \
         --max-model-len 2048 \
         --disable-log-stats \
         --disable-log-requests \
-        --device "musa" \
-        --served-model-name "$served_model_name" 2>&1 | tee -a "$log_file"  &
+        --device \"musa\" \
+        --served-model-name \"$served_model_name\""
+
+    # 根据 host 和 port 的传入情况来添加对应的参数
+    if [ -n "$host" ]; then
+        command="$command --host \"$host\""
+    fi
+
+    if [ -n "$port" ]; then
+        command="$command --port \"$port\""
+    fi
+
+    # 执行命令并将输出写入日志
+    $command 2>&1 | tee -a "$log_file" &
 
     SERVER_PID=$!
 
@@ -290,7 +330,7 @@ main() {
   fi
   read -r converted_model_path <<< "$output"
 
-  start_server "$converted_model_path" "$tp_size" "$TASK"
+  start_server "$converted_model_path" "$tp_size" "$TASK" "$vLLM_HOST" "$vLLM_PORT"
 
 }
 

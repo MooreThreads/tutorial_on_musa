@@ -284,7 +284,6 @@ start_server() {
     echo "Wait for the service to start..."
     # 初始化命令
     cmd=(
-        PYTHONUNBUFFERED=1
         setsid
         python -m vllm.entrypoints.openai.api_server
         --model "$converted_model_path"
@@ -303,7 +302,7 @@ start_server() {
     [[ -n "$port" ]] && cmd+=(--port "$port")
 
     # 执行命令
-    "${cmd[@]}" 2>&1 | tee -a "$log_file" &
+    PYTHONUNBUFFERED=1 "${cmd[@]}" 2>&1 | tee -a "$log_file" &
 
 
     SERVER_PID=$!

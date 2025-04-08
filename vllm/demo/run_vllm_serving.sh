@@ -283,29 +283,28 @@ start_server() {
     : > "$log_file"
     echo "Wait for the service to start..."
     # 初始化命令
-    command="PYTHONUNBUFFERED=1 setsid python -m vllm.entrypoints.openai.api_server \
-        --model \"$converted_model_path\" \
-        --trust-remote-code \
-        --tensor-parallel-size \"$tensor_parallel_size\" \
-        -pp 1 \
-        --block-size 64 \
-        --max-model-len 2048 \
-        --disable-log-stats \
-        --disable-log-requests \
-        --device \"musa\" \
-        --served-model-name \"$served_model_name\""
+    cmd=(
+        PYTHONUNBUFFERED=1
+        setsid
+        python -m vllm.entrypoints.openai.api_server
+        --model "$converted_model_path"
+        --trust-remote-code
+        --tensor-parallel-size "$tensor_parallel_size"
+        -pp 1
+        --block-size 64
+        --max-model-len 2048
+        --disable-log-stats
+        --disable-log-requests
+        --device "musa"
+        --served-model-name "$served_model_name"
+    )
 
-    # 根据 host 和 port 的传入情况来添加对应的参数
-    if [ -n "$host" ]; then
-        command="$command --host \"$host\""
-    fi
+    [[ -n "$host" ]] && cmd+=(--host "$host")
+    [[ -n "$port" ]] && cmd+=(--port "$port")
 
-    if [ -n "$port" ]; then
-        command="$command --port \"$port\""
-    fi
+    # 执行命令
+    "${cmd[@]}" 2>&1 | tee -a "$log_file" &
 
-    # 执行命令并将输出写入日志
-    $command 2>&1 | tee -a "$log_file" &
 
     SERVER_PID=$!
 

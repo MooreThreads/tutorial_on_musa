@@ -52,12 +52,18 @@ while [[ $# -gt 0 ]]; do
             vLLM_PORT="$2"
             shift 2
             ;;
+        --webui)
+            WEBUI=true  # 如果传入了--webui参数，则设置为true
+            shift
+            ;;
         *)
             echo "未知参数: $1"
             exit 1
             ;;
     esac
 done
+
+WEBUI=${WEBUI:-false}
 
 validate_args() {
 if [[ -z "$TASK" ]]; then
@@ -231,13 +237,19 @@ wait_for_log_update() {
 
         if grep -q -E "Uvicorn running on http://" <<< "$last_line" && \
 	    [ "$current_size" -ne "$last_size" ]; then
-	    echo -e "\e[32m"
-            if [ -z "$CONTAINER_NAME" ]; then
-                echo "Please send the following request to obtain the model inference result."
+            if [ "$WEBUI" == "true" ]; then
+                echo -e "\e[32m"
+                echo "Start gradio webui..."
+                create_web_ui $host $port $model_name
+                echo -e "\e[0m"
             else
-                echo "Please send the following request in container($CONTAINER_NAME) to obtain the model inference result."
-            fi
-            cat <<EOF
+                echo -e "\e[32m"
+                if [ -z "$CONTAINER_NAME" ]; then
+                    echo "Please send the following request to obtain the model inference result."
+                else
+                    echo "Please send the following request in container($CONTAINER_NAME) to obtain the model inference result."
+                fi
+                cat <<EOF
 
 
 curl http://0.0.0.0:8000/v1/chat/completions -H "Content-Type: application/json" -d '{
@@ -248,8 +260,10 @@ curl http://0.0.0.0:8000/v1/chat/completions -H "Content-Type: application/json"
     ]
 }'
 EOF
-        echo -e "\e[0m"
-            break
+                echo -e "\e[0m"
+                break
+            fi
+
         fi
 
         last_size=$current_size
@@ -269,6 +283,14 @@ EOF
         fi
     done
     return 1
+}
+
+create_web_ui() {
+    local ip="$1"
+    local port="$2"
+    local served_model_name="$3"
+
+    python ./gradio_demo/app.py --ip "$ip" --port "$port" --model-name "$served_model_name"
 }
 
 start_server() {
@@ -307,7 +329,7 @@ start_server() {
 
     SERVER_PID=$!
 
-    wait_for_log_update "$log_file" "$SERVER_PID" "$served_model_name" "$converted_model_path"
+    wait_for_log_update "$log_file" "$SERVER_PID" "$served_model_name" "$converted_model_path" "$host" "$port"
 }
 
 

@@ -3,10 +3,38 @@ import requests
 import argparse
 
 
+def parse_args():
+    # 创建 ArgumentParser 对象
+    parser = argparse.ArgumentParser(description="Start the vLLM server.")
+
+    # 添加命令行参数
+    parser.add_argument(
+        "--ip", 
+        type=str, 
+        default="0.0.0.0",  # 如果没有传入--ip，使用默认值
+        help="IP address to bind to (default: 0.0.0.0)"
+    )
+
+    parser.add_argument(
+        "--port", 
+        type=str, 
+        default="8000",  # 如果没有传入--port，使用默认值
+        help="Port number to use (default: 8000)"
+    )
+    parser.add_argument(
+        "--model-name", 
+        type=str, 
+        help="Model Name"
+    )
+
+    # 解析传入的参数
+    args = parser.parse_args()
+    return args
+
 # 请求函数
 def chat_with_model(user_input, history):
 
-    global IP
+    global IP, PORT, MODEL_NAME
     VLLM_API_URL = f"http://{IP}:{PORT}/v1/chat/completions"
 
     # 构造 messages（支持上下文）
@@ -51,37 +79,13 @@ def create_webui(ip):
 
 
 def main():
-    # 创建 ArgumentParser 对象
-    parser = argparse.ArgumentParser(description="Start the vLLM server.")
-
-    # 添加命令行参数
-    parser.add_argument(
-        "--ip", 
-        type=str, 
-        default="0.0.0.0",  # 如果没有传入--ip，使用默认值
-        help="IP address to bind to (default: 0.0.0.0)"
-    )
-
-    parser.add_argument(
-        "--port", 
-        type=str, 
-        default="8000",  # 如果没有传入--port，使用默认值
-        help="Port number to use (default: 8000)"
-    )
-    parser.add_argument(
-        "--model-name", 
-        type=str, 
-        help="Model Name"
-    )
-
-    # 解析传入的参数
-    args = parser.parse_args()
+    args = parse_args()
+    global IP, PORT, MODEL_NAME
     IP = args.ip
-    global PORT, MODEL_NAME
     PORT = args.port
     MODEL_NAME = args.model_name
 
-    create_webui(IP)
+    create_webui(ip=IP)
 
 if __name__ == "__main__":
     main()

@@ -3,9 +3,6 @@ import requests
 import json
 import argparse
 
-IP = "192.168.5.44"
-vLLM_PORT = "8000"
-
 
 def parse_args():
     # 创建 ArgumentParser 对象
@@ -94,4 +91,4 @@ with gr.Blocks() as demo:
     txt.submit(chat_with_model_streaming, [txt, chatbot], [chatbot, txt])
     clear.click(lambda: ([], ""), [], [chatbot, txt])
 
-demo.launch(server_name="192.168.5.44")
+demo.launch(server_name=args.ip)

@@ -239,10 +239,13 @@ wait_for_log_update() {
 	    [ "$current_size" -ne "$last_size" ]; then
             if [ "$WEBUI" == "true" ]; then
                 echo -e "\e[32m"
-                echo "Start gradio webui..."
+                echo "Installing gradio..."  >&2
                 pip install gradio
-                create_web_ui $host $port $model_name
+                echo "Start gradio webui..."  >&2
+                nohup create_web_ui "$host" "$port" "$model_name" 2>&1 | tee -a webui.log &
                 echo -e "\e[0m"
+                wait $!  # 等待该进程结束
+                exit 0
             else
                 echo -e "\e[32m"
                 if [ -z "$CONTAINER_NAME" ]; then

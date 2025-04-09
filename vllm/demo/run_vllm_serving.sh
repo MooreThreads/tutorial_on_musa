@@ -10,7 +10,7 @@ TIME=$(date "+%Y%m%d_%H%M%S")
 DEFAULT_MODEL_DIR="/data/musa_develop_demo_$TIME"
 DOWNLOAD_MODEL_DIR=""
 vLLM_HOST=""
-vLLM_PORT="8000"
+vLLM_PORT=8000
 
 # 解析参数的函数
 parse_args() {

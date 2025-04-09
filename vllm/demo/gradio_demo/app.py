@@ -1,6 +1,10 @@
 import gradio as gr
 import requests
+import json
 import argparse
+
+IP = "192.168.5.44"
+vLLM_PORT = "8000"
 
 
 def parse_args():
@@ -31,63 +35,63 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-# 请求函数
-def chat_with_model(user_input, history):
+args = parse_args()
+# 配置 vLLM 推理服务的地址和模型名
+VLLM_API_URL = f"http://{args.ip}:{args.port}/v1/chat/completions"
+MODEL_NAME = args.model_name
 
-    global IP, PORT, MODEL_NAME
-    print(f"IP: {IP}, PORT: {PORT}, MODEL_NAME: {MODEL_NAME}")
-    VLLM_API_URL = f"http://{IP}:{PORT}/v1/chat/completions"
 
-    # 构造 messages（支持上下文）
+# ✅ 流式请求函数
+def chat_with_model_streaming(user_input, history):
     messages = [{"role": "system", "content": "You are a helpful assistant."}]
-    # for user_msg, bot_msg in history:
-    #     messages.append({"role": "user", "content": user_msg})
-    #     messages.append({"role": "assistant", "content": bot_msg})
     messages.append({"role": "user", "content": user_input})
 
-    # 构造请求 payload
     payload = {
         "model": MODEL_NAME,
         "messages": messages,
-        "stream": True
+        "stream": True  # ✅ 启用流式输出
     }
 
+    history = history or []  # 初始化历史记录
+    bot_response = ""  # 存储逐步生成的回答
+
     try:
-        # 调用 OpenAI 格式的 API
-        response = requests.post(VLLM_API_URL, json=payload, timeout=60)
-        response.raise_for_status()
-        answer = response.json()['choices'][0]['message']['content']
+        # ✅ 使用 requests 的流式请求
+        with requests.post(VLLM_API_URL, json=payload, stream=True) as response:
+            response.raise_for_status()
+            
+            # ✅ 逐块解析流式响应
+            for chunk in response.iter_lines():
+                if chunk:
+                    chunk_str = chunk.decode("utf-8").strip()
+                    if chunk_str.startswith("data: "):
+                        chunk_data = chunk_str[6:]  # 去掉 "data: " 前缀
+                        if chunk_data != "[DONE]":
+                            try:
+                                chunk_json = json.loads(chunk_data)
+                                delta = chunk_json["choices"][0]["delta"]
+                                if "content" in delta:
+                                    bot_response += delta["content"]
+                                    # ✅ 逐步更新聊天记录
+                                    yield history + [(user_input, bot_response)], ""
+                            except json.JSONDecodeError:
+                                pass
+
     except Exception as e:
-        answer = f"❌ 推理失败: {str(e)}"
+        bot_response = f"❌ 推理失败: {str(e)}"
+        yield history + [(user_input, bot_response)], ""
 
-    # history.append((user_input, answer))
-    return history + [(user_input, answer)], ""
+# 构建 Gradio 界面
+with gr.Blocks() as demo:
+    gr.Markdown("## 💬 Web UI 接入 vLLM 模型（流式输出）")
+    chatbot = gr.Chatbot()
+    txt = gr.Textbox(placeholder="请输入你的问题", label="输入")
+    clear = gr.Button("清除")
+    submit = gr.Button("提交")
 
+    # ✅ 使用流式函数
+    submit.click(chat_with_model_streaming, [txt, chatbot], [chatbot, txt])
+    txt.submit(chat_with_model_streaming, [txt, chatbot], [chatbot, txt])
+    clear.click(lambda: ([], ""), [], [chatbot, txt])
 
-def create_webui(ip):
-    with gr.Blocks() as demo:
-        gr.Markdown("## 💬 Web UI 接入 vLLM 模型")
-        chatbot = gr.Chatbot()
-        txt = gr.Textbox(placeholder="请输入你的问题", label="输入")
-        clear = gr.Button("清除")
-        submit = gr.Button("提交")
-
-        submit.click(chat_with_model, [txt, chatbot], [chatbot, txt])
-        txt.submit(chat_with_model, [txt, chatbot], [chatbot, txt])
-        clear.click(lambda: ([], ""), [], [chatbot, txt])
-
-    demo.launch(server_name=ip,)
-
-
-def main():
-    args = parse_args()
-    global IP, PORT, MODEL_NAME
-    IP = args.ip
-    PORT = args.port
-    MODEL_NAME = args.model_name
-    print(f"IP: {IP}, PORT: {PORT}, MODEL_NAME: {MODEL_NAME}")
-    create_webui(ip=IP)
-
-if __name__ == "__main__":
-    main()
-
+demo.launch(server_name="192.168.5.44")

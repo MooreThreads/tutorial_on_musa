@@ -35,6 +35,7 @@ def parse_args():
 def chat_with_model(user_input, history):
 
     global IP, PORT, MODEL_NAME
+    print(f"IP: {IP}, PORT: {PORT}, MODEL_NAME: {MODEL_NAME}")
     VLLM_API_URL = f"http://{IP}:{PORT}/v1/chat/completions"
 
     # 构造 messages（支持上下文）
@@ -84,7 +85,7 @@ def main():
     IP = args.ip
     PORT = args.port
     MODEL_NAME = args.model_name
-
+    print(f"IP: {IP}, PORT: {PORT}, MODEL_NAME: {MODEL_NAME}")
     create_webui(ip=IP)
 
 if __name__ == "__main__":

@@ -1,13 +1,45 @@
 import gradio as gr
 import requests
 import json
+import argparse
 
 IP = "192.168.5.44"
 vLLM_PORT = "8000"
 
+
+def parse_args():
+    # 创建 ArgumentParser 对象
+    parser = argparse.ArgumentParser(description="Start the vLLM server.")
+
+    # 添加命令行参数
+    parser.add_argument(
+        "--ip", 
+        type=str, 
+        default="0.0.0.0",  # 如果没有传入--ip，使用默认值
+        help="IP address to bind to (default: 0.0.0.0)"
+    )
+
+    parser.add_argument(
+        "--port", 
+        type=str, 
+        default="8000",  # 如果没有传入--port，使用默认值
+        help="Port number to use (default: 8000)"
+    )
+    parser.add_argument(
+        "--model-name", 
+        type=str, 
+        help="Model Name"
+    )
+
+    # 解析传入的参数
+    args = parser.parse_args()
+    return args
+
+args = parse_args()
 # 配置 vLLM 推理服务的地址和模型名
-VLLM_API_URL = "http://192.168.5.44:8000/v1/chat/completions"
-MODEL_NAME = "deepseek-r1-distill-qwen-1.5b"
+VLLM_API_URL = f"http://{args.ip}:{args.port}/v1/chat/completions"
+MODEL_NAME = args.model_name
+
 
 # ✅ 流式请求函数
 def chat_with_model_streaming(user_input, history):

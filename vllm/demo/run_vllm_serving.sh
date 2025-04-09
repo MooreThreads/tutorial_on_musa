@@ -240,6 +240,7 @@ wait_for_log_update() {
             if [ "$WEBUI" == "true" ]; then
                 echo -e "\e[32m"
                 echo "Start gradio webui..."
+                pip install gradio
                 create_web_ui $host $port $model_name
                 echo -e "\e[0m"
             else

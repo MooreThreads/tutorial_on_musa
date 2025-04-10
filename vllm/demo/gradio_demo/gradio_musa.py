@@ -1,13 +1,13 @@
 import gradio as gr
 
 
-TITLE="在摩尔线程KUAE集群上基于MT Transformer推理引擎运行的QwQ 32B推理模型"
+TITLE=""
 
 TOP = """\
 <div class="top">
         <div class="top-container">
                 <img class="logo" width="140" height="37" src="https://kuae-playground.mthreads.com/image/logo@2x.png">
-                <h2>夸娥工场</h2>
+                <h2>GPU GENIUS</h2>
         </div>
 </div>"""
 
@@ -19,11 +19,7 @@ js_change_title = '''\
 window.onload = function() {
     document.title = "''' + TITLE + '''";
 }'''
-HEADER = TOP + "<h1>" + TITLE + "</h1><p>" + '''\
-在摩尔线程KUAE集群上，QwQ 32B模型通过摩尔线程推理vLLM + MT Transformer引擎高效运行。
-<p>QwQ 32B是Qwen系列中的推理模型。与传统的指令调优模型相比，QwQ 32B模型具有思考和推理的能力，在下游任务中，尤其是在解决困难问题时，性能显著提升。QwQ 32B是中型推理模型，能够与当前最先进的推理模型（如DeepSeek-R1和o1-mini）相媲美，展现出竞争力的表现。</p>
-<p>借助于<b>摩尔线程KUAE集群</b>和<b>MT Transformer引擎</b>的强大支持，QwQ 32B模型更好地应对复杂任务，推动了智能推理技术的发展。
-</p>'''
+HEADER = TOP + "<h1>" + TITLE + "</h1><p>"
 
 
 

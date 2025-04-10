@@ -238,12 +238,10 @@ wait_for_log_update() {
         if grep -q -E "Uvicorn running on http://" <<< "$last_line" && \
 	    [ "$current_size" -ne "$last_size" ]; then
             if [ "$WEBUI" == "true" ]; then
-                echo -e "\e[32m"
-                echo "Installing gradio..."  >&2
+                echo -e "\e[32mInstalling gradio...\e[0m"  >&2
                 pip install gradio
-                echo "Start gradio webui..."  >&2
-                create_web_ui "$host" "$port" "$model_name" >&2
-                echo -e "\e[0m"
+                echo -e "\e[32mStart gradio webui...\e[0m"  >&2
+                setsid python -u ./gradio_demo/app.py --ip "$host" --port "$port" --model-name "$model_name" | tee -a webui.log &
                 wait $!  # 等待该进程结束
                 exit 0
             else
@@ -287,14 +285,6 @@ EOF
         fi
     done
     return 1
-}
-
-create_web_ui() {
-    local ip="$1"
-    local port="$2"
-    local served_model_name="$3"
-
-    python ./gradio_demo/app.py --ip "$ip" --port "$port" --model-name "$served_model_name"
 }
 
 start_server() {

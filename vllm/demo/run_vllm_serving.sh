@@ -3,11 +3,14 @@
 # 默认值
 MODEL=""
 CONVERTED_MODEL=""
+MODEL_TYPE=""  # 
 TP_SIZE=""
 MODEL_CONFIG_FILE="supported_models.json"
 TIME=$(date "+%Y%m%d_%H%M%S")
-DEFAUTL_MODEL_DIR="/data/musa_develop_demo_$TIME"
-
+DEFAULT_MODEL_DIR="/data/musa_develop_demo_$TIME"
+DOWNLOAD_MODEL_DIR=""
+vLLM_HOST=""
+vLLM_PORT=8000
 
 # 解析参数的函数
 parse_args() {
@@ -29,9 +32,29 @@ while [[ $# -gt 0 ]]; do
             TP_SIZE="$2"
             shift 2
             ;;
+        --model-type)
+            MODEL_TYPE="$2"
+            shift 2
+            ;;
         --container-name)
             CONTAINER_NAME="$2"
             shift 2
+            ;;
+        --download-model-dir)
+            DOWNLOAD_MODEL_DIR="$2"
+            shift 2
+            ;;
+        --vllm-host)
+            vLLM_HOST="$2"
+            shift 2
+            ;;
+        --vllm-port)
+            vLLM_PORT="$2"
+            shift 2
+            ;;
+        --webui)
+            WEBUI=true  # 如果传入了--webui参数，则设置为true
+            shift
             ;;
         *)
             echo "未知参数: $1"
@@ -40,8 +63,11 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+WEBUI=${WEBUI:-false}
+
 validate_args() {
 if [[ -z "$TASK" ]]; then
+    # 隐藏--container-name参数
     echo "Usage: $0 --task <model_name> [--model <original_model_path> | --converted-model <converted_model_path>] [-tp-size <tensor_parallel_size>]"
     exit 1
 fi
@@ -127,10 +153,15 @@ check_and_prepare_model() {
     # 1. 如果只有 model_name, 下载模型
     if [ -z "$model_path" ] && [ -z "$converted_model_path" ]; then
 
-        model_path=$DEFAUTL_MODEL_DIR/$model_name
-        converted_model_path=$DEFAUTL_MODEL_DIR/$model_name-tp$tp_size-converted
+        if [ -z "$DOWNLOAD_MODEL_DIR" ]; then
+            model_path=$DEFAULT_MODEL_DIR/$model_name
+            converted_model_path=$DEFAULT_MODEL_DIR/$model_name-tp$tp_size-converted
 
-        mkdir -p "$model_path" "$converted_model_path"
+            mkdir -p "$model_path" "$converted_model_path"
+        else
+            model_path=$DOWNLOAD_MODEL_DIR/$model_name
+            converted_model_path=$DOWNLOAD_MODEL_DIR/$model_name-tp$tp_size-converted
+        fi
 
         echo -e "\e[32mmodel_path: $model_path\e[0m" >&2
         echo -e "\e[32mconverted_model_path: $converted_model_path\e[0m" >&2
@@ -159,7 +190,7 @@ check_and_prepare_model() {
     fi
 
     if [ -z "$(ls -A $converted_model_path)" ]; then
-        convert_weight $model_path $converted_model_path $tp_size >&2
+        convert_weight $model_path $converted_model_path $tp_size $MODEL_TYPE >&2
     fi
 
     echo "$converted_model_path"
@@ -206,13 +237,21 @@ wait_for_log_update() {
 
         if grep -q -E "Uvicorn running on http://" <<< "$last_line" && \
 	    [ "$current_size" -ne "$last_size" ]; then
-	    echo -e "\e[32m"
-            if [ -z "$CONTAINER_NAME" ]; then
-                echo "Please send the following request to obtain the model inference result."
+            if [ "$WEBUI" == "true" ]; then
+                echo -e "\e[32mInstalling gradio...\e[0m"  >&2
+                pip install gradio
+                echo -e "\e[32mStart gradio webui...\e[0m"  >&2
+                setsid python -u ./gradio_demo/app.py --ip "$host" --port "$port" --model-name "$model_name" | tee -a webui.log &
+                wait $!  # 等待该进程结束
+                exit 0
             else
-                echo "Please send the following request in container($CONTAINER_NAME) to obtain the model inference result."
-            fi
-            cat <<EOF
+                echo -e "\e[32m"
+                if [ -z "$CONTAINER_NAME" ]; then
+                    echo "Please send the following request to obtain the model inference result."
+                else
+                    echo "Please send the following request in container($CONTAINER_NAME) to obtain the model inference result."
+                fi
+                cat <<EOF
 
 
 curl http://0.0.0.0:8000/v1/chat/completions -H "Content-Type: application/json" -d '{
@@ -223,8 +262,10 @@ curl http://0.0.0.0:8000/v1/chat/completions -H "Content-Type: application/json"
     ]
 }'
 EOF
-        echo -e "\e[0m"
-            break
+                echo -e "\e[0m"
+                break
+            fi
+
         fi
 
         last_size=$current_size
@@ -251,25 +292,38 @@ start_server() {
     local converted_model_path="$1"
     local tensor_parallel_size="$2"
     local served_model_name="$3"
+    local host="$4"
+    local port="$5"
     
     log_file=$(dirname "$converted_model_path")/model_server.log
     : > "$log_file"
     echo "Wait for the service to start..."
-    PYTHONUNBUFFERED=1 setsid python -m vllm.entrypoints.openai.api_server \
-        --model "$converted_model_path" \
-        --trust-remote-code \
-        --tensor-parallel-size "$tensor_parallel_size" \
-        -pp 1 \
-        --block-size 64 \
-        --max-model-len 2048 \
-        --disable-log-stats \
-        --disable-log-requests \
-        --device "musa" \
-        --served-model-name "$served_model_name" 2>&1 | tee -a "$log_file"  &
+    # 初始化命令
+    cmd=(
+        setsid
+        python -m vllm.entrypoints.openai.api_server
+        --model "$converted_model_path"
+        --trust-remote-code
+        --tensor-parallel-size "$tensor_parallel_size"
+        -pp 1
+        --block-size 64
+        --max-model-len 2048
+        --disable-log-stats
+        --disable-log-requests
+        --device "musa"
+        --served-model-name "$served_model_name"
+    )
+
+    [[ -n "$host" ]] && cmd+=(--host "$host")
+    [[ -n "$port" ]] && cmd+=(--port "$port")
+
+    # 执行命令
+    PYTHONUNBUFFERED=1 "${cmd[@]}" 2>&1 | tee -a "$log_file" &
+
 
     SERVER_PID=$!
 
-    wait_for_log_update "$log_file" "$SERVER_PID" "$served_model_name" "$converted_model_path"
+    wait_for_log_update "$log_file" "$SERVER_PID" "$served_model_name" "$converted_model_path" "$host" "$port"
 }
 
 
@@ -290,7 +344,7 @@ main() {
   fi
   read -r converted_model_path <<< "$output"
 
-  start_server "$converted_model_path" "$tp_size" "$TASK"
+  start_server "$converted_model_path" "$tp_size" "$TASK" "$vLLM_HOST" "$vLLM_PORT"
 
 }
 

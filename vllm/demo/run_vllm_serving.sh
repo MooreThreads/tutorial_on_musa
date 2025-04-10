@@ -242,7 +242,7 @@ wait_for_log_update() {
                 echo "Installing gradio..."  >&2
                 pip install gradio
                 echo "Start gradio webui..."  >&2
-                create_web_ui "$host" "$port" "$model_name" 2>&1 | tee -a webui.log
+                create_web_ui "$host" "$port" "$model_name" >&2
                 echo -e "\e[0m"
                 wait $!  # 等待该进程结束
                 exit 0

@@ -88,7 +88,7 @@ def chat_with_model_streaming(user_input, history):
             first_token_latency = first_token_time - start_time if first_token_time is not None else 0
             elapsed_time = time.time() - first_token_time
             tps = token_count / elapsed_time if elapsed_time > 0 else 0  # ✅ 计算 Tokens Per Second
-            speed_text = f"⏳ 首字延迟: {first_token_latency:.2f} | ⏱️  耗时: {elapsed_time:.2f} 秒 | 🔢 Tokens: {token_count} | ⚡ 速度: {tps:.2f} TPS" # ⏳
+            speed_text = f"⏳ 首字延迟: {first_token_latency:.2f} 秒 | ⏱️  耗时: {elapsed_time:.2f} 秒 | 🔢 Tokens: {token_count} | ⚡ 速度: {tps:.2f} TPS" # ⏳
             yield history + [(user_input, bot_response)], "", speed_text  # ✅ 返回推理速度
 
     except Exception as e:

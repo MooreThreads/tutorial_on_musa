@@ -27,7 +27,7 @@
         "tensor_parallel_size": [1]
     },
 
-    "Qwen/QwQ-32B": {
+    "qwq-32b": {
         "name": "Qwen/QwQ-32B",
         "modelscope_url": "https://www.modelscope.cn/Qwen/QwQ-32B.git",
         "huggingface_url": "https://huggingface.co/Qwen/QwQ-32B",

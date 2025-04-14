@@ -57,6 +57,7 @@ def chat_with_model_streaming(user_input, history):
     # ✅ 记录开始时间
     start_time = time.time()
     token_count = 0  # ✅ 记录生成的 Token 数量
+    first_token_time = None
 
     try:
         # ✅ 使用 requests 的流式请求
@@ -77,14 +78,17 @@ def chat_with_model_streaming(user_input, history):
                                     bot_response += delta["content"]
                                     # ✅ 逐步更新聊天记录
                                     token_count += 1  # ✅ 每个 Token 计数  
+                                    if first_token_time is None and token_count > 0:
+                                        first_token_time = time.time()
+
                                     yield history + [(user_input, bot_response)], "", "推理中..."
                             except json.JSONDecodeError:
                                 pass
             # ✅ 记录结束时间 & 计算时长
-            elapsed_time = time.time() - start_time
+            first_token_latency = first_token_time - start_time if first_token_time is not None else 0
+            elapsed_time = time.time() - first_token_time
             tps = token_count / elapsed_time if elapsed_time > 0 else 0  # ✅ 计算 Tokens Per Second
-
-            speed_text = f"⏱️  耗时: {elapsed_time:.2f} 秒 | 🔢 Tokens: {token_count} | ⚡ 速度: {tps:.2f} TPS"
+            speed_text = f"⏳ 首字延迟: {first_token_latency:.2f} 秒 | ⏱️  耗时: {elapsed_time:.2f} 秒 | 🔢 Tokens: {token_count} | ⚡ 速度: {tps:.2f} TPS" # ⏳
             yield history + [(user_input, bot_response)], "", speed_text  # ✅ 返回推理速度
 
     except Exception as e:
@@ -95,7 +99,7 @@ def chat_with_model_streaming(user_input, history):
 
 # ✅ 清除聊天记录 & 计时器
 def clear_chat():
-    return [], "", "⏱️  耗时: 0.00 秒 | 🔢 Tokens: 0 | ⚡ 速度: 0.00 TPS"  # ✅ 清空所有 UI
+    return [], "", "⏳ 首字延迟: 0.00 秒 | ⏱️  耗时: 0.00 秒 | 🔢 Tokens: 0 | ⚡ 速度: 0.00 TPS"  # ✅ 清空所有 UI
 
 # 构建 Gradio 界面
 with gradio_musa.Blocks() as demo:
@@ -103,7 +107,7 @@ with gradio_musa.Blocks() as demo:
     chatbot = gr.Chatbot(label="Running on MTT S4000")
     msg_input = gr.Textbox(placeholder="请输入你的问题", label="输入...", lines=1, autofocus=True)
 
-    speed_display = gr.Textbox(label="推理速度", value="⏱️  耗时: 0.00 秒 | 🔢 Tokens: 0 | ⚡ 速度: 0.00 TPS", interactive=False)  # >✅ 显示推理速度
+    speed_display = gr.Textbox(label="推理速度", value="⏳ 首字延迟: 0.00 秒 | ⏱️  耗时: 0.00 秒 | 🔢 Tokens: 0 | ⚡ 速度: 0.00 TPS", interactive=False)  # >✅ 显示推理速度
 
     # clear = gr.Button("清除")
     # submit = gr.Button("提交")

@@ -7,7 +7,6 @@ TOP = """\
 <div class="top">
         <div class="top-container">
                 <img class="logo" width="140" height="37" src="https://kuae-playground.mthreads.com/image/logo@2x.png">
-                <h2>GPU GENIUS</h2>
         </div>
 </div>"""
 

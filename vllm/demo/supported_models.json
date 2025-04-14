@@ -25,5 +25,12 @@
         "modelscope_url": "https://www.modelscope.cn/Qwen/Qwen2.5-0.5B-Instruct.git",
         "huggingface_url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct",
         "tensor_parallel_size": [1]
+    },
+
+    "qwq-32b": {
+        "name": "Qwen/QwQ-32B",
+        "modelscope_url": "https://www.modelscope.cn/Qwen/QwQ-32B.git",
+        "huggingface_url": "https://huggingface.co/Qwen/QwQ-32B",
+        "tensor_parallel_size": [2, 4]
     }
 }

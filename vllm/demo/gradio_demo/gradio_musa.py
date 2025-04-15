@@ -12,7 +12,7 @@ TOP = """\
 
 FOOTER = '''\
 <div class="footer">
-    <span>Copyright © 2024-2025 摩尔线程版权所有 京公网安备 11010802036174号 京ICP证2020041674号</span>
+    <span>Copyright © 2024-2025 摩尔线程版权所有 京公网安备 11010802035174号 京ICP证2020041674号-2</span>
 </div>'''
 js_change_title = '''\
 window.onload = function() {

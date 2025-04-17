@@ -30,7 +30,6 @@ docker run -it --privileged --pull always --network=host --name=torch_musa_test 
 ```
 
 # 容器环境检查
-
 ```
 # 在容器内执行
 cd examples_on_musa/setup_musa/check

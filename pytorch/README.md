@@ -26,7 +26,7 @@ mthreads-gmi
 **请按照实际驱动环境，参考上述表格，更换启动docker命令中镜像名**
 ```bash
 # S4000 Python3.8
-docker run -it --privileged --pull always --network=host --name=torch_musa_test -w /home/workspace -v /data:/data --env MTHREADS_VISIBLE_DEVICES=all --shm-size=80g registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S4000-py38 /bin/bash
+docker run -it --privileged --pull always --network=host --name=torch_musa_test -v /data:/data --env MTHREADS_VISIBLE_DEVICES=all --shm-size=80g registry.mthreads.com/mcconline/musa-pytorch-release-public:rc3.1.0-v1.3.0-S4000-py38 /bin/bash
 ```
 
 # 容器环境检查

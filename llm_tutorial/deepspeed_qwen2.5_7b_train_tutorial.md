@@ -25,7 +25,7 @@ docker run -it --privileged --net host --name=model_train -w /workspace -v /data
 * --name=model_train 指定容器名称，不能和其他容器重名
 * -w /workspace 指定工作目录
 * -v /data:/data 映射目录，前者为物理机目录，后者为容器内访问的目录
-* sh-harbor.mthreads.com/mcc/test/mt-ai-kuae-qy2:v1.3.0-release-1031 镜像名
+* registry.mthreads.com/mcctest/mt-ai-kuae-qy2:v1.3.0-release-1031-ggn 镜像名
 
 软件栈和镜像对应关系可参考下表
 |驱动版本|软件栈版本|对应镜像|

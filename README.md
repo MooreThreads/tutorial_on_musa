@@ -20,6 +20,7 @@
     - [摩尔线程文档中心](#摩尔线程文档中心)
     - [摩尔线程GPU监控和管理工具](#摩尔线程gpu监控和管理工具)
     - [摩尔线程云原生套件安装及使用文档](#摩尔线程云原生套件安装及使用文档)
+    - [摩尔线程GPU软件栈自动部署工具](#摩尔线程gpu软件栈自动部署工具)
   - [摩尔线程CSDN社区](#摩尔线程csdn社区)
   - [镜像仓库](#镜像仓库)
   <!-- tocstop -->
@@ -98,6 +99,7 @@
 - [摩尔线程GPU监控和管理工具](https://docs.mthreads.com/gmc/gmc-doc-online/user_manual/)
 
 - [摩尔线程云原生套件安装及使用文档](https://docs.mthreads.com/cloud-native/cloud-native-doc-online/introduction/)
+- [摩尔线程GPU软件栈自动部署工具](https://document-dev.devops.mthreads.com/musa-deploy/musa-deploy-doc-online/introduction/)
 
 ### [摩尔线程CSDN社区](https://bbs.csdn.net/forums/mthreads)
 

@@ -29,8 +29,8 @@
 
     "qwen2.5-72b-instruct": {
         "name": "Qwen/Qwen2.5-72B-Instruct",
-        "modelscope_url": "https://www.modelscope.cn/Qwen/Qwen2.5-7.2B-Instruct.git",
-        "huggingface_url": "https://huggingface.co/Qwen/Qwen2.5-7.2B-Instruct",
+        "modelscope_url": "https://www.modelscope.cn/Qwen/Qwen2.5-72B-Instruct.git",
+        "huggingface_url": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct",
         "tensor_parallel_size": [4, 8]
     },
 

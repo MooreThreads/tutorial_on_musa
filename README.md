@@ -4,6 +4,7 @@
 <!-- toc -->
 
 - [setup\_musa](#setup_musa)
+- [musa-deploy](#musa-deploy)
 - [musa\_quick\_start](#musa_quick_start)
 - [torch\_musa](#torch_musa)
 - [vLLM](#vllm)
@@ -20,7 +21,6 @@
     - [摩尔线程文档中心](#摩尔线程文档中心)
     - [摩尔线程GPU监控和管理工具](#摩尔线程gpu监控和管理工具)
     - [摩尔线程云原生套件安装及使用文档](#摩尔线程云原生套件安装及使用文档)
-    - [摩尔线程GPU软件栈自动部署工具](#摩尔线程gpu软件栈自动部署工具)
   - [摩尔线程CSDN社区](#摩尔线程csdn社区)
   - [镜像仓库](#镜像仓库)
   <!-- tocstop -->
@@ -30,6 +30,10 @@
 [setup_musa](./setup_musa)目录包含配置musa开发环境的文档和脚本，以及对musa环境检查的脚本。 用户可根据目录中文档进行环境配置，有问题可以参考[FAQ](./FAQ)目录解决。配置MUSA环境整体流程如下图所示，其中Check是可选项:
 
 ![install_guide](docs/images/install_guide.png)
+
+## musa-deploy
+为了方便开发者快速搭建 MUSA 开发环境，我们提供了自动化部署工具，可用于替代上述 `setup_musa` 中的手动配置环境步骤。详细的使用说明请参考：
+[摩尔线程GPU软件栈自动部署工具](https://document-dev.devops.mthreads.com/musa-deploy/musa-deploy-doc-online/introduction/)
 
 ## musa_quick_start
 [musa_quick_start](./musa_quick_start)目录包含了一些musa编程示例代码。用户可参考示例代码快速开始musa编程工作。
@@ -99,7 +103,6 @@
 - [摩尔线程GPU监控和管理工具](https://docs.mthreads.com/gmc/gmc-doc-online/user_manual/)
 
 - [摩尔线程云原生套件安装及使用文档](https://docs.mthreads.com/cloud-native/cloud-native-doc-online/introduction/)
-- [摩尔线程GPU软件栈自动部署工具](https://document-dev.devops.mthreads.com/musa-deploy/musa-deploy-doc-online/introduction/)
 
 ### [摩尔线程CSDN社区](https://bbs.csdn.net/forums/mthreads)
 

@@ -1,4 +1,4 @@
-![Examples Logo](docs/images/example.png)
+![Examples Logo](docs/images/tutorial.png)
 -----------------------
 
 <!-- toc -->

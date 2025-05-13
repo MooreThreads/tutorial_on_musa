@@ -34,26 +34,22 @@ openxlab dataset get --dataset-repo OpenDataLab/CIFAR-100 && cd OpenDataLab___CI
 
 3. Prepare scripts
 ```
-## CentOS
-yum install -y mesa-libGL
-## Ubuntu
-apt install -y libgl1-mesa-dev
-
-cd package
+cd packages # tutorial_on_musa/packages
 # 目前只是编译了py310 使用驱动版本为rc3.1.0
 pip install mmcv-2.1.0-cp310-cp310-linux_x86_64.whl
 
-git clone -b 9124ebf7a285a https://github.com/open-mmlab/mmengine.git
+git clone https://github.com/open-mmlab/mmengine.git
 cd mmengine
+git checkout 9124ebf7a285a
 pip install -r requirements.txt
 python setup.py install
 
-git clone -b 17a886cb582 https://github.com/open-mmlab/mmpretrain.git 
+git clone https://github.com/open-mmlab/mmpretrain.git 
 cd mmpretrain
 pip install -e .
 
-vim configs/_base_/datasets/imagenet_bs32.py # 修改data_root 的值为数据所在地
-vim configs/_base_/default_runtime.py        # 修改load_from 的值，放在''中
+vim configs/_base_/datasets/imagenet_bs32.py # 修改data_root 的值为数据集路径，修改dataset_type为对应数据集名字
+vim configs/_base_/default_runtime.py        # 修改load_from 的值为预训练权重文件路径，放在''中
 
 ```
 

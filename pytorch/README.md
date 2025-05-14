@@ -21,7 +21,7 @@ mthreads-gmi
 
 </details> 
 
-**NOTE: Python3.9和Python3.10请分别使用“py39”和“py310”替换上述镜像中“py38”.**
+**NOTE: Python3.10 版本镜像请使用 `py310` 替换上述镜像 tag 中 `py38`.**
 
 **请按照实际驱动环境，参考上述表格，更换启动docker命令中镜像名**
 ```bash
@@ -32,6 +32,6 @@ docker run -it --privileged --pull always --network=host --name=torch_musa_test 
 # 容器环境检查
 ```
 # 在容器内执行
-cd examples_on_musa/setup_musa/check
+cd tutorial_on_musa/setup_musa/check
 bash test_musa.sh
 ```

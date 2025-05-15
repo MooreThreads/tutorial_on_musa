@@ -6,6 +6,13 @@
         "tensor_parallel_size": [1]
     },
 
+    "deepseek-r1-distill-qwen-7b": {
+        "name": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "modelscope_url": "https://www.modelscope.cn/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B.git",
+        "huggingface_url": "https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "tensor_parallel_size": [1]
+    },
+
     "deepseek-r1-distill-llama-70b": {
         "name": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
         "modelscope_url": "https://www.modelscope.cn/deepseek-ai/DeepSeek-R1-Distill-Llama-70B.git",

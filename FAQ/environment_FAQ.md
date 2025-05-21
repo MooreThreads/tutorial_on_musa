@@ -38,6 +38,11 @@ sudo reboot
 # 根据如下命令判断是否开启 IOMMU
 sudo cat /var/log/dmesg | grep -e "AMD-Vi: Interrupt remapping enabled" -e "IOMMU enabled"
 ```
+> 对于 Hygon CPU 服务器，可能即使上述步骤执行完，依然无法解决，请尝试以下方法:  
+> 1. 登录机器对应 BMC;  
+> 2. `远程控制` -> `Bios设置` ->  `IO选项` -> `IOMMU` -> `Enable` -> `保存`;
+> 3. 重启机器。
+> ![Hygon_BMC_IOMMU](../docs/images/FAQ_ENV_t3.png)  
 
 #### 4. 容器内 mthreads-gmi 无输出
 

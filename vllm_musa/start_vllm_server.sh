@@ -148,7 +148,7 @@ wait_for_log_update() {
         local current_size=$(stat -c%s "$log_file")
 	    local last_line=$(tail -n 5 "$log_file" 2>/dev/null | grep -E -v '^[[:space:]]*$')
 
-        if grep -q -E "Uvicorn running on http://" <<< "$last_line" && \
+        if grep -q -E "Application startup complete" <<< "$last_line" && \
 	    [ "$current_size" -ne "$last_size" ]; then
             if [ "$WEBUI" == "true" ]; then
                 echo -e "\e[32mInstalling gradio...\e[0m"  >&2
@@ -171,9 +171,10 @@ wait_for_log_update() {
 curl http://$host:$port/v1/chat/completions -H "Content-Type: application/json" -d '{
     "model": "$model_name",
     "messages": [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "Who won the NBA final series in 2020?"}
-    ]
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Who won the NBA final series in 2020?"}
+            ]
+
 }'
 EOF
                 echo -e "\e[0m"
@@ -223,7 +224,7 @@ start_vllm() {
     setsid bash -c "stdbuf -oL vllm serve ${FINAL_ARGS[*]} 2>&1 | tee -a $LOG_FILE" &
 
 
-    wait_for_log_update $log_file $!  "${DEFUALT_SERVED_MODEL_NAME:-$(basename "$MODEL")}" "$DEFAULT_HOST" "$DEFAULT_PORT"
+    wait_for_log_update $LOG_FILE $!  "${DEFUALT_SERVED_MODEL_NAME:-$(basename "$MODEL")}" "$DEFAULT_HOST" "$DEFAULT_PORT"
 }
 
 

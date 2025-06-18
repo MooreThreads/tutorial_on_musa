@@ -203,23 +203,26 @@ EOF
 
 
 start_vllm() {
+
     echo "========================================"
-    echo "启动 vLLM 服务"
-    echo "模型路径: $MODEL"
-    echo "端口: $DEFAULT_PORT"
-    echo "GPU 内存利用率: $DEFAULT_GPU_UTIL"
-    echo "张量并行度: $DEFAULT_TP_SIZE"
-    echo "最大模型长度: $DEFAULT_MODEL_LEN"
-    echo "信任远程代码: $DEFAULT_TRUST_REMOTE_CODE"
-    echo "其他参数: ${USER_ARGS[*]}"
-    echo "完整命令: vllm serve ${FINAL_ARGS[*]}"
+    echo "Starting vLLM Service..."
+    echo "Model path        : $MODEL"
+    echo "Served Model Name : ${DEFUALT_SERVED_MODEL_NAME:-$(basename "$MODEL")}"
+    echo "Port              : $DEFAULT_PORT"
+    echo "GPU Utilization   : $DEFAULT_GPU_UTIL"
+    echo "Tensor Parallel   : $DEFAULT_TP_SIZE"
+    echo "Max Model Length  : $DEFAULT_MODEL_LEN"
+    echo "Trust Remote Code : $DEFAULT_TRUST_REMOTE_CODE"
+    echo "Extra Arguments   : ${USER_ARGS[*]}"
+    echo "Full Command      : vllm serve ${FINAL_ARGS[*]}"
     echo "========================================"
 
+    log_file=vllm_server.log
+    : > "$log_file"
 
+    PYTHONUNBUFFERED=1  vllm serve "${FINAL_ARGS[@]}" 2>&1 | tee -a "$log_file" &
 
-    PYTHONUNBUFFERED=1  vllm serve "${FINAL_ARGS[@]}" 2>&1 | tee -a vllm.log &
-
-    wait_for_log_update vllm.log $!  "${DEFUALT_SERVED_MODEL_NAME:-$(basename "$MODEL")}" "$DEFAULT_HOST" "$DEFAULT_PORT"
+    wait_for_log_update $log_file $!  "${DEFUALT_SERVED_MODEL_NAME:-$(basename "$MODEL")}" "$DEFAULT_HOST" "$DEFAULT_PORT"
 }
 
 

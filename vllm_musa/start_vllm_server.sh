@@ -217,10 +217,11 @@ start_vllm() {
     echo "Full Command      : vllm serve ${FINAL_ARGS[*]}"
     echo "========================================"
 
-    log_file=vllm_server.log
-    : > "$log_file"
+    LOG_FILE="vllm_serve.log"
+    : > "$LOG_FILE"  # 清空日志文件
 
-    PYTHONUNBUFFERED=1  vllm serve "${FINAL_ARGS[@]}" 2>&1 | tee -a "$log_file" &
+    setsid bash -c "stdbuf -oL vllm serve ${FINAL_ARGS[*]} 2>&1 | tee -a $LOG_FILE" &
+
 
     wait_for_log_update $log_file $!  "${DEFUALT_SERVED_MODEL_NAME:-$(basename "$MODEL")}" "$DEFAULT_HOST" "$DEFAULT_PORT"
 }

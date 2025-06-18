@@ -217,7 +217,7 @@ start_vllm() {
 
 
 
-    nohup vllm serve "${FINAL_ARGS[@]}" 2>&1 | tee vllm.log &
+    PYTHONUNBUFFERED=1  vllm serve "${FINAL_ARGS[@]}" 2>&1 | tee -a vllm.log &
 
     wait_for_log_update vllm.log $!  "${DEFUALT_SERVED_MODEL_NAME:-$(basename "$MODEL")}" "$DEFAULT_HOST" "$DEFAULT_PORT"
 }

@@ -118,6 +118,7 @@ build_final_args() {
     FINAL_ARGS=(
         "$MODEL"
         "--port" "$DEFAULT_PORT"
+        "--host" "$DEFAULT_HOST"
         "--gpu-memory-utilization" "$DEFAULT_GPU_UTIL"
         "--tensor-parallel-size" "$DEFAULT_TP_SIZE"
         "--max-model-len" "$DEFAULT_MODEL_LEN"

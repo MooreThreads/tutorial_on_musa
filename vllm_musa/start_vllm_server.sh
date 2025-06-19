@@ -5,9 +5,8 @@ set -e
 # 默认参数配置
 DEFAULT_PORT=8000
 DEFAULT_HOST="localhost"
-DEFAULT_GPU_UTIL=0.8
+DEFAULT_GPU_UTIL=0.9
 DEFAULT_TP_SIZE=1
-DEFAULT_MODEL_LEN=4096
 DEFAULT_TRUST_REMOTE_CODE=true
 DEFUALT_SERVED_MODEL_NAME=""
 
@@ -71,10 +70,6 @@ parse_arguments() {
                 DEFAULT_TP_SIZE="$2"
                 shift 2
                 ;;
-            --max-model-len)
-                DEFAULT_MODEL_LEN="$2"
-                shift 2
-                ;;
             --trust-remote-code)
                 DEFAULT_TRUST_REMOTE_CODE=true
                 shift
@@ -121,7 +116,6 @@ build_final_args() {
         "--host" "$DEFAULT_HOST"
         "--gpu-memory-utilization" "$DEFAULT_GPU_UTIL"
         "--tensor-parallel-size" "$DEFAULT_TP_SIZE"
-        "--max-model-len" "$DEFAULT_MODEL_LEN"
         "--served-model-name" "${DEFUALT_SERVED_MODEL_NAME:-$(basename "$MODEL")}"
     )
 
@@ -213,7 +207,6 @@ start_vllm() {
     echo "Port              : $DEFAULT_PORT"
     echo "GPU Utilization   : $DEFAULT_GPU_UTIL"
     echo "Tensor Parallel   : $DEFAULT_TP_SIZE"
-    echo "Max Model Length  : $DEFAULT_MODEL_LEN"
     echo "Trust Remote Code : $DEFAULT_TRUST_REMOTE_CODE"
     echo "Extra Arguments   : ${USER_ARGS[*]}"
     echo "Full Command      : vllm serve ${FINAL_ARGS[*]}"

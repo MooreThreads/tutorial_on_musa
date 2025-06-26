@@ -85,3 +85,21 @@ docker ps -a | grep vllm_mtt_service
 ```
 
 如果容器状态是 `Up`，则表示容器正在运行。如果容器状态是 `Exited (0)`，则表示容器已经正常退出。
+
+## 6. 如果不创建Dockerfile，直接使用基础镜像
+
+如果不想创建 Dockerfile，直接使用基础镜像运行容器：
+
+```bash
+docker run -d \
+    --privileged \
+    -p 8008:8000 \
+    --name=vllm_mtt_service \
+    -w /workspace \
+    -v /data/mtt/:/data/mtt/ \
+    --env MTHREADS_VISIBLE_DEVICES=all \
+    --shm-size=80G \
+    --entrypoint "tail" \
+    registry.mthreads.com/mcconline/mtt-vllm-public:v0.2.1-kuae1.3.0-s4000-py38 \
+    -f /dev/null
+```

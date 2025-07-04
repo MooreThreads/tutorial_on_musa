@@ -16,3 +16,8 @@ pip install -r requirements.txt
 ```shell
 python test_bge_m3.py
 ```
+
+4. performance
+```shell
+python perf_bge_m3_big.py
+```

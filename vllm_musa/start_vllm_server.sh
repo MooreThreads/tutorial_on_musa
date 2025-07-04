@@ -147,7 +147,7 @@ wait_for_log_update() {
 	    [ "$current_size" -ne "$last_size" ]; then
             if [ "$WEBUI" == "true" ]; then
                 echo -e "\e[32mInstalling gradio...\e[0m"  >&2
-                pip install gradio
+                pip install -U gradio
                 echo -e "\e[32mStart gradio webui...\e[0m"  >&2
                 echo -e "\e[32mContainer: $CONTAINER_NAME\e[0m"  >&2
                 setsid python -u ./gradio_demo/app.py --ip "$host" --port "$port" --model-name "$model_name" | tee -a webui.log &

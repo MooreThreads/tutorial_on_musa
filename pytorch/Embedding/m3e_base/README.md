@@ -9,10 +9,10 @@ pip install -U huggingface_hub
 ```
 2. export env
 ```shell
-export export HF_ENDPOINT=https://hf-mirror.com
+export HF_ENDPOINT=https://hf-mirror.com
 ```
 
 3. Test
 ```shell
-python perf_m3_base.py
+python perf_m3e_base.py
 ```

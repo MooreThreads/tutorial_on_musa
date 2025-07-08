@@ -9,10 +9,10 @@ pip install -U huggingface_hub
 ```
 2. export env
 ```shell
-export export HF_ENDPOINT=https://hf-mirror.com
+export HF_ENDPOINT=https://hf-mirror.com
 ```
 
 3. Test
 ```shell
-python perf_flag_reranker.py
+python bge_reranker_large.py
 ```

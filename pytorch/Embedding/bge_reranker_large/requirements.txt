@@ -1,0 +1,5 @@
+FlagEmbedding
+accelerate==1.0.1
+transformers==4.44.0
+peft
+

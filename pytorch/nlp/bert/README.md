@@ -3,6 +3,8 @@
 
 1. Prepare model
 ```
+apt-get update
+apt-get install git-lfs
 git lfs install
 git clone https://huggingface.co/google-bert/bert-base-chinese
 
@@ -34,6 +36,7 @@ bash run_dist_train.sh
 
 5. Inference
 ```shell
+# ⚠️  Make sure the model_path in test_bert.py is correctly set before running
 cp -r test_bert.py bert4torch/test/models/
 python bert4torch/test/models/test_bert.py
 ```

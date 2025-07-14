@@ -34,7 +34,7 @@ bash run_train.sh
 bash run_dist_train.sh
 ```
 
-5. Model Consistency Check
+5. Inference
 ```shell
 # ⚠️  Make sure the model_path in test_bert.py is correctly set before running
 cp -r test_bert.py bert4torch/test/models/

@@ -2,6 +2,8 @@
 start_time=$(date +%s)
 
 cur_path=`pwd`
+mkdir -p "$cur_path/log"
+
 export AMP_ON=1
 export DDP_ON=1
 export DEVICE='musa'

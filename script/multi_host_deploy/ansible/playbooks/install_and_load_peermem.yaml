@@ -1,0 +1,87 @@
+---
+- name: 安装并配置 mt-peermem 模块（含复制离线包）
+  hosts: all
+  become: true
+  vars:
+    local_deb_path: "./mt-peermem_1.2_amd64.deb"
+    remote_deb_path: "/tmp/mt-peermem_1.2_amd64.deb"
+
+  tasks:
+
+    - name: 确保目标路径存在（安装脚本用到）
+      file:
+        path: /home/mccxadmin/mt-ggn
+        state: directory
+        owner: mccxadmin
+        group: mccxadmin
+        mode: '0755'
+
+    - name: 复制 mt-peermem 离线安装包到远程主机
+      copy:
+        src: "{{ local_deb_path }}"
+        dest: "{{ remote_deb_path }}"
+        mode: '0644'
+
+    - name: Ensure APT cache is updated and dependencies are satisfied
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        force_apt_get: yes
+
+    - name: Fix broken dependencies (if any)
+      command: apt --fix-broken install -y
+
+    - name: 安装 mt-peermem 包
+      apt:
+        deb: "{{ remote_deb_path }}"
+        state: present
+
+    - name: Create systemd service file
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/load-peermem.service
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          [Unit]
+          Description=Load mt_peermem module
+          After=network.target
+
+          [Service]
+          Type=simple
+          ExecStart=/sbin/modprobe mt_peermem
+          Restart=on-failure
+          RestartSec=10s
+          RuntimeMaxSec=10m
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Enable and start the service
+      ansible.builtin.systemd:
+        name: load-peermem.service
+        enabled: yes
+        state: started
+
+    - name: Verify module is loaded (wait up to 60 seconds)
+      ansible.builtin.shell:
+        cmd: |
+          for i in {1..6}; do
+            if lsmod | grep -q mt_peermem; then
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
+      register: mod_check
+      ignore_errors: yes
+      changed_when: false
+
+    - name: Fail if module not loaded after 60 seconds
+      ansible.builtin.fail:
+        msg: "mt_peermem module failed to load after 60 seconds"
+      when: mod_check.rc != 0

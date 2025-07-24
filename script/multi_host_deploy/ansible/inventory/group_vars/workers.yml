@@ -1,0 +1,5 @@
+# injia2 template
+# This file is managed by Ansible, do not edit manually.
+
+ansible_password: |- 
+  {{ 'mt@' + inventory_hostname.split('.')[2] + '%03d' | format(inventory_hostname.split('.')[3] | int) + '!' }}

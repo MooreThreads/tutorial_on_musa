@@ -179,6 +179,7 @@ check_and_prepare_model() {
         git lfs ls-files >&2
 
         # 拉取大文件（带进度条）
+        echo -e "\e[32m正在下载模型，请耐心等待...\e[0m" >&2
         git lfs pull >&2
         if [ $? -ne 0 ]; then
             echo "Error: git lfs pull failed." >&2

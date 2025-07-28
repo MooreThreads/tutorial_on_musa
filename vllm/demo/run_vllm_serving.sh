@@ -167,7 +167,24 @@ check_and_prepare_model() {
         echo -e "\e[32mconverted_model_path: $converted_model_path\e[0m" >&2
         apt-get update -qq >&2 && apt-get install -y --no-install-recommends git-lfs jq >&2
         git lfs install >&2
-        git clone "$model_url" "$model_path" >&2  # TODO(wangkang): need check for clone if successful
+        GIT_LFS_SKIP_SMUDGE=1 git clone "$model_url" "$model_path" >&2
+        if [ $? -ne 0 ]; then
+            echo "Error: git clone failed." >&2
+            exit 1
+        fi
+
+        cd "$model_path" || { echo "Error: failed to cd into $model_path" >&2; exit 1; }
+
+        # 显示需要下载的 LFS 文件（可选）
+        git lfs ls-files >&2
+
+        # 拉取大文件（带进度条）
+        echo -e "\e[32m正在下载模型，请耐心等待...\e[0m" >&2
+        git lfs pull >&2
+        if [ $? -ne 0 ]; then
+            echo "Error: git lfs pull failed." >&2
+            exit 1
+        fi
         echo "√ Model download completed." >&2
 
 

@@ -1,7 +1,8 @@
 Matmul 自动化测试
 # 1. 脚本说明
-matmul 存放位置：
+matmul 放置位置：
 ```shell
+# mudnn_bench 默认存放在 /usr/local/musa/ 下
 mudnn_bench
 ├── bench_test_matmul.sh
 ├── bin
@@ -32,9 +33,10 @@ MUSA_VISIBLE_DEVICES=3 ./bin/mudnn_bench -m --mm_m 2048 --mm_n 2048 --mm_k 2048 
 注意：fp64和tf32 数据类型调用非 mudnn 接口
 ```shell
 # 1. 编译
-bash ./fp64_tf32_src/build_gemm_tf32.sh
+cd ./fp64_tf32_src
 
-bash ./fp64_tf32_src/build_gemm_fp64.sh
+bash build_gemm_tf32.sh
+bash build_gemm_fp64.sh
 
 ## 2. 测试
 bash test_gemm_fp64_tf32.sh

@@ -1,4 +1,4 @@
-Matmul 自动化测试脚本
+Matmul 自动化测试
 # 1. 脚本说明
 matmul 存放位置：
 ```shell
@@ -9,7 +9,8 @@ mudnn_bench
 │   └── mudnn_bench-x.x.x
 ├── matmul_test
 ```
-mudnn_bench 示例：
+mudnn_bench 示例：  
+**部分旧版本mudnn_bench和mudnn版本不支持混合精度测试，需要和开发者做确认.**
 ```shell
 
 # 示例 1：单卡，大矩阵，f32
@@ -26,7 +27,9 @@ MUSA_VISIBLE_DEVICES=3 ./bin/mudnn_bench -m --mm_m 2048 --mm_n 2048 --mm_k 2048 
 ```
 
 # 2. 测试
+可在测试脚本中自行批量配置测试MNK，warmup，iter等。
 ## 2.1 fp64, tf32 测试
+注意：fp64和tf32 数据类型调用非 mudnn 接口
 ```shell
 # 1. 编译
 bash ./fp64_tf32_src/build_gemm_tf32.sh
@@ -38,6 +41,12 @@ bash test_gemm_fp64_tf32.sh
 ```
 
 ## 2.2 f32_f16_bf16_q8_fp8 测试
+mudnn_bench 测试矩阵value默认说明：
+- 浮点：-0.5~0.5  
+- fp8: 整型-10~10转浮点  
+- qint4：-7～7 
+- 整型：-127~127  
+> 部分版本 mudnn_bench 工具支持全 0 测试(参数 `-z` 实现)，需要和开发者确认
 ```shell
 bash test_gemm_f32_f16_bf16_q8_fp8.sh
 ```

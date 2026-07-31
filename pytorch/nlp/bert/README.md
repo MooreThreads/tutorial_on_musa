@@ -1,5 +1,3 @@
-假设工作空间为本目录：`tutorial_on_musa/pytorch/nlp/bert`。
-
 0. Start docker  
 启动命令可参考: [README.md](../../README.md)
 
@@ -27,8 +25,11 @@ cd tutorial_on_musa/pytorch/nlp/bert
 git clone https://github.com/Tongjilibo/bert4torch.git
 cd bert4torch
 git reset --hard ebd53d61c28295
+# 每台训练节点/容器都要执行
 python setup.py install
+pip install torch4keras==0.2.7
 cd ..
+# 仅单机训练需要；多机用本目录 task_sequence_labeling_ner_crf_2node.py，无需此 cp
 cp task_sequence_labeling_ner_crf.py bert4torch/examples/sequence_labeling/
 ```
 
@@ -40,10 +41,9 @@ ln -sfn ../data data
 bash ../run_train.sh          # 单卡
 bash ../run_dist_train.sh     # 单机 8 卡
 
-# 多机 2×8：数据在共享盘上同样按 1–3 准备，从本目录启动
+# 多机 2×8：本目录须在两机共享盘（含 data/ 与脚本）；两机免密 SSH（默认端口 62216，可用 SSH_PORT 覆盖）
 cd tutorial_on_musa/pytorch/nlp/bert
 bash run_dist_train_2node.sh <NODE0_IP> <NODE1_IP> 50
-# SSH 端口默认 62216，可用 SSH_PORT 覆盖
 ```
 
 5. Inference
